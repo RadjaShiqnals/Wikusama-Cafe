@@ -7,19 +7,11 @@
     <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## About the Project
 
-Laravel is a modern web application framework with expressive and elegant syntax. It provides a delightful and creative development experience. Laravel simplifies common tasks in web projects, including:
+This project is a web application built using Laravel 11 as the backend framework and Blade as the frontend templating engine. The web server used is XAMPP with PHPMyAdmin for managing the MySQL database. The project requires PHP version 8.2 or higher.
 
-- [Simple and fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive and intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides the necessary tools for building large and robust applications.
+Laravel is a modern web application framework with expressive and elegant syntax. It simplifies common tasks in web projects and provides a delightful and creative development experience. Laravel is accessible, powerful, and provides the necessary tools for building large and robust applications.
 
 ## Learning Laravel
 
@@ -64,4 +56,5 @@ If you discover a security vulnerability within Laravel, please report it to Tay
 ## License
 
 The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
 
