@@ -7,9 +7,7 @@ use App\Http\Controllers\API\AuthController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-Route::post('/user/register', [AuthController::class, 'userregister']);
-Route::post('/user/login', [AuthController::class, 'userlogin']);
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/user/logout', [AuthController::class, 'userlogout']);
-});
-Route::get('/getuser', [AuthController::class, 'getUser']);
+Route::post('/user/register', [AuthController::class, 'apiregister']);
+Route::post('/user/login', [AuthController::class, 'apilogin']);
+Route::post('/user/logout', [AuthController::class, 'apilogout']);
+Route::get('/getuser', [AuthController::class, 'apigetuser']);
