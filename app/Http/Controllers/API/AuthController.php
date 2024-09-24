@@ -15,7 +15,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['apilogin', 'apiregister']]);
+        $this->middleware('auth:api', ['except' => ['apilogin', 'apiregister', 'apigetuser']]);
     }
     public function apiregister(Request $request)
     {
@@ -69,6 +69,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login successful',
+            'data' => $credentials,
             'token' => $token
         ], 200);
     }
