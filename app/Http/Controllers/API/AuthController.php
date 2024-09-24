@@ -7,19 +7,26 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+
 
 class AuthController extends Controller
 {
-    public function userregister(Request $request)
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['apilogin', 'apiregister']]);
+    }
+    public function apiregister(Request $request)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:users'],
             'username' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'role' => ['required', 'string', 'in:admin,kasir,manajer'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-    
+
         try {
             $user = User::create([
                 'name' => $request->name,
@@ -30,7 +37,7 @@ class AuthController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-    
+
             if ($user) {
                 return response()->json([
                     'message' => 'User created successfully',
@@ -49,31 +56,23 @@ class AuthController extends Controller
             ], 500);
         }
     }
-    public function userlogin(Request $request)
+    public function apilogin(Request $request)
     {
-        $request->validate([
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
-        ]);
+        $credentials = $request->only('email', 'password');
 
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Invalid credentials'
+                'message' => 'Unauthorized',
+                'error' => 'Invalid credentials'
             ], 401);
         }
-
-        $user->tokens()->delete();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful',
             'token' => $token
         ], 200);
     }
-    public function getUser(Request $request)
+    public function apigetuser(Request $request)
     {
         $user = User::all();
 
@@ -81,20 +80,17 @@ class AuthController extends Controller
             'user' => $user
         ], 200);
     }
-    public function userlogout(Request $request)
+    public function apilogout(Request $request)
     {
         try {
-            $request->user()->currentAccessToken()->delete();
-
+            // Get the current authenticated user token to invalidate to prevent further uses after logout.
+            JWTAuth::invalidate(JWTAuth::getToken());
             return response()->json([
-                'message' => 'Logout successful'
-            ], 200);
-        } catch (\Exception $e) {
-            \Log::error('Logout failed', ['error' => $e->getMessage()]);
-            return response()->json([
-                'message' => 'Failed to logout',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Successfully logged out',
+            ]);
+        } catch (JWTException $e) {
+            // Catch any errors during token invalidation process
+            return response()->json(['error' => 'Failed to logout, please try again'], 500);
         }
     }
 }
