@@ -17,3 +17,4 @@ Route::get('/kasir/access', [KasirController::class, 'index'])->middleware('auth
 Route::post('/kasir/create-transaksi', [KasirController::class, 'apicreatetransaksi']);
 Route::post('/kasir/bayar-transaksi', [KasirController::class, 'apipaytransaction']);
 Route::get('/kasir/get-all-transaksi', [KasirController::class, 'apiseetransaction']);
+Route::get('/kasir/transaction-note/{id}', [KasirController::class, 'generateTransactionNotePdf']);

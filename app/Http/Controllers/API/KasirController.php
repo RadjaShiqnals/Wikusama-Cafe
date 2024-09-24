@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class KasirController extends Controller
 {
@@ -28,6 +30,57 @@ class KasirController extends Controller
             return response()->json(['message' => 'You do not have access as a kasir'], 403);
         }
     }
+    public function generateTransactionNotePdf($transactionId)
+{
+    // Get the authenticated user
+    $user = Auth::user();
+    
+    // Check if the authenticated user has the role "kasir"
+    if ($user->role == 'kasir') {
+        // Find the transaction by ID
+        $transaction = TransaksiModel::find($transactionId);
+
+        if (!$transaction) {
+            return response()->json(['message' => 'Transaction not found'], 404);
+        }
+
+        // Load relations
+        $transaction->load('userRelations', 'detailTransaksiRelations.menuRelations', 'mejaRelations');
+
+        // Prepare data for the PDF
+        $data = [
+            'cafe_name' => 'Wikusama Cafe',
+            'transaction_date' => $transaction->tgl_transaksi,
+            'cashier_name' => $transaction->userRelations->name,
+            'meja' => $transaction->mejaRelations->nomor_meja,
+            'details' => $transaction->detailTransaksiRelations
+        ];
+
+        // Generate HTML content for the PDF
+        $html = view('pdf.transaction_note', $data)->render();
+
+        // Initialize Dompdf
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+
+        // Load HTML content
+        $dompdf->loadHtml($html);
+
+        // Set paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        return $dompdf->stream('transaction_note.pdf');
+    } else {
+        // Logic for other roles
+        return response()->json(['message' => 'You do not have access as a kasir'], 403);
+    }
+}
     public function apicreatetransaksi(Request $request)
     {
         // Get the authenticated user
