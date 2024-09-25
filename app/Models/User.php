@@ -12,7 +12,7 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable, HasUuids, HasApiTokens;
+    use HasFactory, Notifiable, HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +20,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      *//* 
       */
+    public $table = 'users';
+
     public $incrementing = false; // id_user is not an auto incrementing integer
     protected $primaryKey = 'id_user'; // id_user is a primary key
     protected $keyType = 'string'; // id_user is a string (varchar)
@@ -29,6 +31,7 @@ class User extends Authenticatable implements JWTSubject
         'username',
         'email',
         'password',
+        'role',
     ];
 
     /**

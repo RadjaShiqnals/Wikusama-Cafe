@@ -15,14 +15,14 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['apilogin', 'apiregister']]);
+        $this->middleware('auth:api', ['except' => ['apilogin', 'apiregister', 'apigetuser']]);
     }
     public function apiregister(Request $request)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:users'],
             'username' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'role' => ['required', 'string', 'in:admin,kasir,manajer'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -69,6 +69,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login successful',
+            'data' => $credentials,
             'token' => $token
         ], 200);
     }
