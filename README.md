@@ -13,6 +13,8 @@ This project is a web application built using Laravel 11 as the backend framewor
 
 Laravel is a modern web application framework with expressive and elegant syntax. It simplifies common tasks in web projects and provides a delightful and creative development experience. Laravel is accessible, powerful, and provides the necessary tools for building large and robust applications.
 
+Postman Documentation : https://documenter.getpostman.com/view/28791552/2sAXqwXyro
+
 ## Learning Laravel
 
 Laravel has extensive and comprehensive [documentation](https://laravel.com/docs) and a video tutorial library, making it easy to get started with the framework.
