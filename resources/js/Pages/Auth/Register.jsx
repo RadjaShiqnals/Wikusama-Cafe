@@ -9,9 +9,11 @@ import ThemeToggle from "../ThemeToggle";
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
+        username: "",
         email: "",
         password: "",
         password_confirmation: "",
+        role: "", // Ensure role is included in the form data
     });
 
     const submit = (e) => {
@@ -57,7 +59,7 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.username} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
@@ -118,6 +120,7 @@ export default function Register() {
                         className="mt-2"
                     />
                 </div>
+
                 <div className="mt-4">
                     <InputLabel htmlFor="role" value="Role" />
 
@@ -129,6 +132,7 @@ export default function Register() {
                         onChange={(e) => setData("role", e.target.value)}
                         required
                     >
+                        <option value="">Select a role</option>
                         <option value="admin">Admin</option>
                         <option value="manajer">Manajer</option>
                         <option value="kasir">Kasir</option>

@@ -21,7 +21,7 @@ const ThemeToggle = () => {
     return (
         <button
         onClick={toggleTheme}
-        className="p-2 rounded-full bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200"
+        className="p-2 rounded-full text-gray-800 dark:text-gray-200"
     >
         {theme === 'dark' ? <FontAwesomeIcon icon={faSun} /> : <FontAwesomeIcon icon={faMoon} />}
     </button>

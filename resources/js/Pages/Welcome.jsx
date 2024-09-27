@@ -40,6 +40,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             </div>
                             <nav className="-mx-3 flex flex-1 justify-end">
                             <ThemeToggle />
+                            <Link
+                                            href={route('logout')}
+                                            method="post"
+                                            as="button"
+                                        >
+                                            Log Out
+                                        </Link>
                                 {auth.user ? (
                                     <Link
                                         href={route('dashboard')}
