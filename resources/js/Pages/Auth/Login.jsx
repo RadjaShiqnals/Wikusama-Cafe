@@ -5,6 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import axios from 'axios';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,12 +14,30 @@ export default function Login({ status, canResetPassword }) {
         remember: false,
     });
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
 
-        post(route('login'), {
-            onFinish: () => reset('password'),
-        });
+        try {
+            const response = await axios.post(route('login'), {
+                email: data.email,
+                password: data.password,
+                remember: data.remember,
+            });
+            console.log('Response:', response.data);
+            // Check if the response contains the token
+            if (response.data.token) {
+                // Store the token in local storage
+                localStorage.setItem('token', response.data.token);
+                // Redirect to the dashboard
+                window.location.href = '/dashboard';
+            } else {
+                console.error('Token not found in response');
+            }
+        } catch (error) {
+            console.error('Login failed', error);
+        } finally {
+            reset('password');
+        }
     };
 
     return (

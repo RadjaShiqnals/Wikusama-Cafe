@@ -12,12 +12,16 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\Auth\Guard;
 
 class KasirController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
 
         // Check if the authenticated user has the role "kasir"
         if ($user->role == 'kasir') {
@@ -175,5 +179,38 @@ class KasirController extends Controller
             // Logic for other roles
             return response()->json(['message' => 'You do not have access as a kasir'], 403);
         }
+    }
+
+    public function getMeja(Request $request, Guard $auth)
+    {
+        $user = Auth::guard('api')->user();
+
+        // Check if the authenticated user has the role "kasir"
+        if ($user->role == 'kasir') {
+            $meja = MejaModel::all();
+            return response()->json([
+                'meja' => $meja
+            ], 200);
+        } else {
+            // Logic for other roles
+            return response()->json(['message' => 'You do not have access as a kasir'], 403);
+        }
+
+    }
+    public function getMenu(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+
+        // Check if the authenticated user has the role "kasir"
+        if ($user->role == 'kasir') {
+            $menu = MenuModel::all();
+            return response()->json([
+                'menu' => $menu
+            ], 200);
+        } else {
+            // Logic for other roles
+            return response()->json(['message' => 'You do not have access as a kasir'], 403);
+        }
+
     }
 }

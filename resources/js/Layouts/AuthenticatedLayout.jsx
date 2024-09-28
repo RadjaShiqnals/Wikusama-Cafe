@@ -11,7 +11,18 @@ export default function Authenticated({ header, children }) {
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-
+        const getDashboardLink = () => {
+            switch (user.role) {
+                case 'admin':
+                    return '/admin/dashboard';
+                case 'kasir':
+                    return '/kasir/dashboard';
+                case 'manajer':
+                    return '/manajer/dashboard';
+                default:
+                    return '/dashboard';
+            }
+        };
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -19,15 +30,15 @@ export default function Authenticated({ header, children }) {
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
-                                <Link href="/">
+                                <Link href={getDashboardLink()}>
                                     <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                                 </Link>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
+                                    href={getDashboardLink()}
+                                    active={getDashboardLink()}
                                 >
                                     Dashboard
                                 </NavLink>
@@ -44,7 +55,7 @@ export default function Authenticated({ header, children }) {
                                                 type="button"
                                                 className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
                                             >
-                                                {user.name} | {user.role}
+                                                {user.username} | {user.role}
 
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
