@@ -1,6 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import ThemeToggle from './ThemeToggle'; // Adjust the path as necessary
-
+import LogoutButton from '@/Components/LogoutButton';
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const handleImageError = () => {
         document
@@ -40,13 +40,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             </div>
                             <nav className="-mx-3 flex flex-1 justify-end">
                             <ThemeToggle />
-                            <Link
-                                            href={route('logout')}
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </Link>
+                            <LogoutButton />
                                 {auth.user ? (
                                     <Link
                                         href={route('dashboard')}

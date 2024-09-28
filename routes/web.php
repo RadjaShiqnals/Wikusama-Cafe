@@ -8,6 +8,7 @@ use App\Http\Controllers\User\ManajerController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\API\KasirController as Meja;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
