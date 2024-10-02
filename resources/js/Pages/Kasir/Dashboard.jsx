@@ -185,27 +185,28 @@ export default function KasirDashboard() {
                                                 </label>
                                             </td>
                                             <td>
-                                                {menuList.map((menu) => (
-                                                    <div key={menu.id_menu}>
-                                                        <input
-                                                            type="checkbox"
-                                                            id={`menu_${menu.id_menu}`}
-                                                            name="id_menu"
-                                                            value={menu.id_menu}
-                                                            checked={formData.id_menu.includes(
-                                                                menu.id_menu
-                                                            )}
-                                                            onChange={
-                                                                handleMenuChange
-                                                            }
-                                                        />
-                                                        <label
-                                                            htmlFor={`menu_${menu.id_menu}`}
-                                                        >
-                                                            {menu.nama_menu}
-                                                        </label>
-                                                    </div>
-                                                ))}
+                                                <div className="flex flex-wrap">
+                                                    {menuList.map((menu) => (
+                                                        <div key={menu.id_menu} className="w-1/3 p-2">
+                                                            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                                                                <img src={`/storage/${menu.gambar}`} alt={menu.nama_menu} className="w-full h-32 object-cover mb-2 max-h-48" />
+                                                                <div className="text-center text-gray-800 dark:text-gray-200">{menu.nama_menu}</div>
+                                                                <div className="text-center text-gray-800 dark:text-gray-200">{menu.harga}</div>
+                                                                <div className="text-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={`menu_${menu.id_menu}`}
+                                                                        name="id_menu"
+                                                                        value={menu.id_menu}
+                                                                        checked={formData.id_menu.includes(menu.id_menu)}
+                                                                        onChange={handleMenuChange}
+                                                                    />
+                                                                    <label htmlFor={`menu_${menu.id_menu}`} className="ml-2">{menu.nama_menu}</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -213,7 +214,7 @@ export default function KasirDashboard() {
                                 <button
                                     type="submit"
                                     className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
-                                    >
+                                >
                                     Create Transaction
                                 </button>
                             </form>

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\KasirController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ManajerController;
-use App\Http\Controllers\User\AdminController;
+use App\Http\Controllers\API\AdminController;
 
 // Auth API
 Route::post('/user/register', [AuthController::class, 'apiregister']);
@@ -30,6 +30,7 @@ Route::post('/admin/create-user', [AdminController::class, 'createUser']);
 Route::get('/admin/get-all-user', [AdminController::class, 'getAllUsers']);
 Route::put('/admin/update-user/{id}', [AdminController::class, 'updateUser']);
 Route::delete('/admin/delete-user/{id}', [AdminController::class, 'deleteUser']);
+Route::post('/admin/create-menu', [AdminController::class, 'createMenu']);
 
 // Other API
 Route::get('/kasir/getmeja', [KasirController::class, 'getMeja']);
