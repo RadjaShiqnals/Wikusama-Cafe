@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): JsonResponse
     {
         // Authenticate the user using the 'web' guard
-        if (!Auth::guard('web')->attempt($request->only('email', 'password'))) {
+        if (!Auth::guard('web')->attempt($request->only('name', 'password'))) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 

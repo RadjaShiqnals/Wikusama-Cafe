@@ -35,7 +35,7 @@ class KasirController extends Controller
     public function apicreatetransaksi(Request $request)
     {
         // Get the authenticated user
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
         // Check if the authenticated user has the role "kasir"
         if ($user->role == 'kasir') {
             // Validation rules
@@ -56,7 +56,7 @@ class KasirController extends Controller
                 } else {
                     $transaksi = TransaksiModel::create([
                         'tgl_transaksi' => now(),
-                        'id_user' => auth()->user()->id_user,
+                        'id_user' => $user->id_user,
                         'id_meja' => $request->id_meja,
                         'nama_pelanggan' => $request->nama_pelanggan,
                         'status' => 'belum_bayar',
@@ -108,7 +108,7 @@ class KasirController extends Controller
     public function apipaytransaction(Request $request)
     {
         // Get the authenticated user
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
         // Check if the authenticated user has the role "kasir"
         if ($user->role == 'kasir') {
             // Validation rules
@@ -148,7 +148,7 @@ class KasirController extends Controller
     public function apiseetransaction(Request $request)
     {
         // Get the authenticated user
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
         // Check if the authenticated user has the role "kasir"
         if ($user->role == 'kasir') {
             // Get all transactions
@@ -180,7 +180,53 @@ class KasirController extends Controller
             return response()->json(['message' => 'You do not have access as a kasir'], 403);
         }
     }
-
+    public function apigettransaction(Request $request)
+    {
+        // Get the authenticated user
+        $user = Auth::guard('api')->user();
+        // Check if the authenticated user has the role "kasir"
+        if ($user->role == 'kasir') {
+            // Validate the request
+            $validator = Validator::make($request->all(), [
+                'id_transaksi' => 'required|exists:transaksi,id_transaksi',
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json(['message' => $validator->errors()], 400);
+            }
+    
+            // Get the transaction by ID
+            $transaction = TransaksiModel::find($request->id_transaksi);
+    
+            // Load relations
+            $transaction->load('userRelations', 'mejaRelations', 'detailTransaksiRelations.menuRelations');
+    
+            // Prepare the response data
+            $response = [
+                'Pembuat Transaksi' => $transaction->userRelations->name,
+                'Nomor Meja' => $transaction->mejaRelations->nomor_meja,
+                'Nama Pelanggan' => $transaction->nama_pelanggan,
+                'Status' => $transaction->status,
+                'Menu' => [],
+            ];
+    
+            foreach ($transaction->detailTransaksiRelations as $detail) {
+                $response['Menu'][] = [
+                    'id_menu' => $detail->id_menu,
+                    'nama_menu' => $detail->menuRelations->nama_menu,
+                    'harga' => $detail->harga,
+                ];
+            }
+    
+            return response()->json([
+                'message' => 'Transaction details',
+                'transaction' => $response,
+            ]);
+        } else {
+            // Logic for other roles
+            return response()->json(['message' => 'You do not have access as a kasir'], 403);
+        }
+    }
     public function getMeja(Request $request, Guard $auth)
     {
         $user = Auth::guard('api')->user();

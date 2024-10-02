@@ -11,12 +11,14 @@ use Inertia\Inertia;
 use App\Http\Controllers\API\KasirController as Meja;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect()->route('login');
+    
+    // return Inertia::render('Welcome', [
+    //     'canLogin' => Route::has('login'),
+    //     'canRegister' => Route::has('register'),
+    //     'laravelVersion' => Application::VERSION,
+    //     'phpVersion' => PHP_VERSION,
+    // ]);
 });
 
 Route::get('/dashboard', function () {
@@ -59,7 +61,22 @@ Route::middleware('auth')->group(function () {
         }
         return app(KasirController::class)->index();
     })->name('kasir.dashboard');
-    // Add more kasir routes here
+    Route::get('/kasir/send-payment', function () {
+        $user = Auth::user();
+        if ($user->role !== 'kasir') {
+            abort(403, 'Unauthorized action.');
+        }
+        return app(KasirController::class)->createTransaksi();
+    })->name('kasir.sendpayment');
+    
+    Route::get('/kasir/see-transaksi', function () {
+        $user = Auth::user();
+        if ($user->role !== 'kasir') {
+            abort(403, 'Unauthorized action.');
+        }
+        return app(KasirController::class)->seeTransaksi();
+    })->name('kasir.seetransaksi');
+    
 });
 
 Route::middleware('auth')->group(function () {

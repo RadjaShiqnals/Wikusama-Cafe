@@ -17,6 +17,7 @@ Route::get('/getuser', [AuthController::class, 'apigetuser']);
 Route::get('/kasir/access', [KasirController::class, 'index']);
 Route::post('/kasir/create-transaksi', [KasirController::class, 'apicreatetransaksi']);
 Route::post('/kasir/bayar-transaksi', [KasirController::class, 'apipaytransaction']);
+Route::post('/kasir/get-transaksi', [KasirController::class, 'apigettransaction']);
 Route::get('/kasir/get-all-transaksi', [KasirController::class, 'apiseetransaction']);
 
 // Manajer API

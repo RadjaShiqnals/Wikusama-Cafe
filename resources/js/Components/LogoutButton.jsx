@@ -12,8 +12,8 @@ const logout = async () => {
 };
 
 // Example usage in a component
-const LogoutButton = () => (
-    <button onClick={logout}>Logout</button>
+const LogoutButton = ({ className }) => (
+    <button onClick={logout} className={className}>Logout</button>
 );
 
 export default LogoutButton;

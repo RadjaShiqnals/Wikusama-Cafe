@@ -3,10 +3,20 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import GuestLayout from "@/Layouts/GuestLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm, usePage} from "@inertiajs/react";
 import ThemeToggle from "../ThemeToggle";
+import { useEffect } from "react";
 
 export default function Register() {
+    const { url } = usePage();
+
+    useEffect(() => {
+        if (url === "/register") {
+            alert("This page has been disabled");
+            window.location.href = "/";
+        }
+    }, [url]);
+
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         username: "",
@@ -15,13 +25,12 @@ export default function Register() {
         password_confirmation: "",
         role: "", // Ensure role is included in the form data
     });
-
+    
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("register"), {
-            onFinish: () => reset("password", "password_confirmation"),
-        });
+        alert("This page has been disabled");
+        window.location.href = "/";
     };
 
     return (
