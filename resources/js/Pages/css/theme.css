@@ -1,0 +1,46 @@
+:root {
+    /* Light Mode Colors */
+    --background-light: #fdfdfd;
+    --text-light: #333333;
+    --secondary-text-light: #7f7f7f;
+    --accent-light: #fe0000;
+    --border-light: #b30000;
+
+    /* Dark Mode Colors */
+    --background-dark: #000000;
+    --text-dark: #fdfdfd;
+    --secondary-text-dark: #7f7f7f;
+    --accent-dark: #fe0000;
+    --border-dark: #b30000;
+}
+
+body.light-mode {
+    background-color: var(--background-light);
+    color: var(--text-light);
+}
+
+body.dark-mode {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+}
+
+/* Apply the colors to specific elements as needed */
+.light-mode .primary {
+    background-color: var(--accent-light);
+    border-color: var(--border-light);
+    color: var(--text-light);
+}
+
+.light-mode .secondary {
+    color: var(--secondary-text-light);
+}
+
+.dark-mode .primary {
+    background-color: var(--accent-dark);
+    border-color: var(--border-dark);
+    color: var(--text-dark);
+}
+
+.dark-mode .secondary {
+    color: var(--secondary-text-dark);
+}

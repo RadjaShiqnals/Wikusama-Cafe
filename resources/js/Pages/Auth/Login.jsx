@@ -9,7 +9,7 @@ import axios from 'axios';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
+        name: '',
         password: '',
         remember: false,
     });
@@ -18,25 +18,32 @@ export default function Login({ status, canResetPassword }) {
         e.preventDefault();
 
         try {
-            const response = await axios.post(route('login'), {
-                email: data.email,
+            // Check if there is an existing token
+            const existingToken = localStorage.getItem("token");
+            if (existingToken) {
+                // Remove the existing token
+                localStorage.removeItem("token");
+            }
+            // Make the login request
+            const response = await axios.post(route("login"), {
+                name: data.name,
                 password: data.password,
                 remember: data.remember,
             });
-            console.log('Response:', response.data);
+
             // Check if the response contains the token
             if (response.data.token) {
                 // Store the token in local storage
-                localStorage.setItem('token', response.data.token);
+                localStorage.setItem("token", response.data.token);
                 // Redirect to the dashboard
-                window.location.href = '/dashboard';
+                window.location.href = "/dashboard";
             } else {
-                console.error('Token not found in response');
+                console.error("Token not found in response");
             }
         } catch (error) {
-            console.error('Login failed', error);
+            console.error("Login failed", error);
         } finally {
-            reset('password');
+            reset("password");
         }
     };
 
@@ -52,20 +59,19 @@ export default function Login({ status, canResetPassword }) {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="name" value="Name" />
 
                     <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
+                        id="name"
+                        name="name"
+                        value={data.name}
                         className="mt-1 block w-full"
-                        autoComplete="username"
+                        autoComplete="name"
                         isFocused={true}
-                        onChange={(e) => setData('email', e.target.value)}
+                        onChange={(e) => setData('name', e.target.value)}
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.name} className="mt-2" />
                 </div>
 
                 <div className="mt-4">

@@ -45,7 +45,6 @@ class AuthController extends Controller
                 ], 400);
             }
         } catch (\Exception $e) {
-            \Log::error('User registration failed', ['error' => $e->getMessage()]);
             return response()->json([
                 'message' => 'Failed to create user',
                 'error' => $e->getMessage()

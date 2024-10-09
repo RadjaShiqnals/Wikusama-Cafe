@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): JsonResponse
     {
         // Authenticate the user using the 'web' guard
-        if (!Auth::guard('web')->attempt($request->only('email', 'password'))) {
+        if (!Auth::guard('web')->attempt($request->only('name', 'password'))) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
@@ -48,11 +48,6 @@ class AuthenticatedSessionController extends Controller
 
         // Generate JWT token for the authenticated user
         $token = JWTAuth::fromUser($user);
-
-        Log::info('User logged in', [
-            'user' => $user,
-            'token' => $token,
-        ]);
 
         // Return the token in the response
         return response()->json([

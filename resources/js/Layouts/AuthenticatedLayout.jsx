@@ -1,28 +1,30 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
-import ThemeToggle from '@/Pages/ThemeToggle';
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import Dropdown from "@/Components/Dropdown";
+import NavLink from "@/Components/NavLink";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import { Link, usePage } from "@inertiajs/react";
+import { useState } from "react";
+import ThemeToggle from "@/Pages/ThemeToggle";
+import LogoutButton from "@/Components/LogoutButton";
+import SendPayment from "@/Pages/Kasir/SendPayment"; // Import SendPayment component
 
 export default function Authenticated({ header, children }) {
     const user = usePage().props.auth.user;
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-        const getDashboardLink = () => {
-            switch (user.role) {
-                case 'admin':
-                    return '/admin/dashboard';
-                case 'kasir':
-                    return '/kasir/dashboard';
-                case 'manajer':
-                    return '/manajer/dashboard';
-                default:
-                    return '/dashboard';
-            }
-        };
+    const getDashboardLink = () => {
+        switch (user.role) {
+            case "admin":
+                return "/admin/dashboard";
+            case "kasir":
+                return "/kasir/dashboard";
+            case "manajer":
+                return "/manajer/dashboard";
+            default:
+                return "/dashboard";
+        }
+    };
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -38,14 +40,42 @@ export default function Authenticated({ header, children }) {
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
                                     href={getDashboardLink()}
-                                    active={getDashboardLink()}
+                                    active={
+                                        user.role === "kasir"
+                                            ? route().current('kasir.dashboard')
+                                            : user.role === "admin"
+                                            ? route().current('admin.dashboard')
+                                            : user.role === "manajer"
+                                            ? route().current('manajer.dashboard')
+                                            : false
+                                    }
                                 >
                                     Dashboard
                                 </NavLink>
+                                {user.role === "kasir" && (
+                                    <NavLink
+                                    href={route("kasir.seetransaksi")}
+                                    active={route().current(
+                                        "kasir.seetransaksi"
+                                    )}
+                                    >
+                                        See Transaksi
+                                    </NavLink>
+                                )}
+                                {user.role === "admin" && (
+                                    <NavLink
+                                        href={route("admin.user")}
+                                        active={route().current(
+                                            "admin.user"
+                                        )}
+                                    >
+                                        User
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center"> 
+                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
                             <ThemeToggle />
                             <div className="relative ms-3">
                                 <Dropdown>
@@ -56,7 +86,6 @@ export default function Authenticated({ header, children }) {
                                                 className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
                                             >
                                                 {user.username} | {user.role}
-
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -75,17 +104,11 @@ export default function Authenticated({ header, children }) {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            href={route('profile.edit')}
+                                            href={route("profile.edit")}
                                         >
                                             Profile
                                         </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route('logout')}
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </Dropdown.Link>
+                                        <LogoutButton className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 dark:focus:bg-gray-700" />
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
@@ -95,7 +118,7 @@ export default function Authenticated({ header, children }) {
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
-                                        (previousState) => !previousState,
+                                        (previousState) => !previousState
                                     )
                                 }
                                 className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none dark:text-gray-500 dark:hover:bg-gray-900 dark:hover:text-gray-400 dark:focus:bg-gray-900 dark:focus:text-gray-400"
@@ -109,8 +132,8 @@ export default function Authenticated({ header, children }) {
                                     <path
                                         className={
                                             !showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
+                                                ? "inline-flex"
+                                                : "hidden"
                                         }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -120,8 +143,8 @@ export default function Authenticated({ header, children }) {
                                     <path
                                         className={
                                             showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
+                                                ? "inline-flex"
+                                                : "hidden"
                                         }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -136,17 +159,41 @@ export default function Authenticated({ header, children }) {
 
                 <div
                     className={
-                        (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
+                        (showingNavigationDropdown ? "block" : "hidden") +
+                        " sm:hidden"
                     }
                 >
                     <div className="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
+                            href={route("dashboard")}
+                            active={route().current("dashboard")}
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        {/* {user.role === "kasir" && (
+                            <ResponsiveNavLink
+                                href={route("kasir.sendpayment")}
+                                active={route().current("kasir.sendpayment")}
+                            >
+                                Send Payment
+                            </ResponsiveNavLink>
+                        )} */}
+                        {user.role === "kasir" && (
+                            <ResponsiveNavLink
+                                href={route("kasir.seetransaksi")}
+                                active={route().current("kasir.seetransaksi")}
+                            >
+                                See Transaksi
+                            </ResponsiveNavLink>
+                        )}
+                        {user.role === "admin" && (
+                            <ResponsiveNavLink
+                                href={route("admin.user")}
+                                active={route().current("admin.user")}
+                            >
+                                User
+                            </ResponsiveNavLink>
+                        )}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
@@ -160,12 +207,12 @@ export default function Authenticated({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <ResponsiveNavLink href={route("profile.edit")}>
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
-                                href={route('logout')}
+                                href={route("logout")}
                                 as="button"
                             >
                                 Log Out
@@ -182,7 +229,6 @@ export default function Authenticated({ header, children }) {
                     </div>
                 </header>
             )}
-
             <main>{children}</main>
         </div>
     );

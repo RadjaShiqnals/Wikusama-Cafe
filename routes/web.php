@@ -11,12 +11,14 @@ use Inertia\Inertia;
 use App\Http\Controllers\API\KasirController as Meja;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect()->route('login');
+    
+    // return Inertia::render('Welcome', [
+    //     'canLogin' => Route::has('login'),
+    //     'canRegister' => Route::has('register'),
+    //     'laravelVersion' => Application::VERSION,
+    //     'phpVersion' => PHP_VERSION,
+    // ]);
 });
 
 Route::get('/dashboard', function () {
@@ -40,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Admin Route
 Route::middleware('auth')->group(function () {
     Route::get('/admin/dashboard', function () {
         $user = Auth::user();
@@ -48,9 +51,16 @@ Route::middleware('auth')->group(function () {
         }
         return app(AdminController::class)->index();
     })->name('admin.dashboard');
-    // Add more admin routes here
+    Route::get('/admin/user', function () {
+        $user = Auth::user();
+        if ($user->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+        return app(AdminController::class)->user();
+    })->name('admin.user');
 });
 
+// Kasir Route
 Route::middleware('auth')->group(function () {
     Route::get('/kasir/dashboard', function () {
         $user = Auth::user();
@@ -59,9 +69,33 @@ Route::middleware('auth')->group(function () {
         }
         return app(KasirController::class)->index();
     })->name('kasir.dashboard');
-    // Add more kasir routes here
+    Route::get('/kasir/send-payment', function () {
+        $user = Auth::user();
+        if ($user->role !== 'kasir') {
+            abort(403, 'Unauthorized action.');
+        }
+        return app(KasirController::class)->createTransaksi();
+    })->name('kasir.sendpayment');
+    
+    Route::get('/kasir/see-transaksi', function () {
+        $user = Auth::user();
+        if ($user->role !== 'kasir') {
+            abort(403, 'Unauthorized action.');
+        }
+        return app(KasirController::class)->seeTransaksi();
+    })->name('kasir.seetransaksi');
+
+    Route::get('/kasir/see-detail-transaksi', function () {
+        $user = Auth::user();
+        if ($user->role !== 'kasir') {
+            abort(403, 'Unauthorized action.');
+        }
+        return app(KasirController::class)->seeDetailTransaksi();
+    })->name('kasir.seedetailtransaksi');
+    
 });
 
+// Manajer Route
 Route::middleware('auth')->group(function () {
     Route::get('/manajer/dashboard', function () {
         $user = Auth::user();
