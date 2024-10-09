@@ -49,11 +49,6 @@ class AuthenticatedSessionController extends Controller
         // Generate JWT token for the authenticated user
         $token = JWTAuth::fromUser($user);
 
-        Log::info('User logged in', [
-            'user' => $user,
-            'token' => $token,
-        ]);
-
         // Return the token in the response
         return response()->json([
             'user' => $user,

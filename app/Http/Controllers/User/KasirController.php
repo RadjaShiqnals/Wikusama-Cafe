@@ -14,10 +14,14 @@ class KasirController extends Controller
     }
     public function createTransaksi()
     {
-        return Inertia::render('Kasir/SendPayment');
+        // return Inertia::render('Kasir/SendPayment');
     }
     public function seeTransaksi()
     {
         return Inertia::render('Kasir/SeeTransaction');
+    }
+    public function seeDetailTransaksi()
+    {
+        return Inertia::render('Kasir/seeDetailTransaction');
     }
 }

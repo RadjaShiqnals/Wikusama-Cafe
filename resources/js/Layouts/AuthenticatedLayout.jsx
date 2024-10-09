@@ -54,22 +54,22 @@ export default function Authenticated({ header, children }) {
                                 </NavLink>
                                 {user.role === "kasir" && (
                                     <NavLink
-                                        href={route("kasir.sendpayment")}
-                                        active={route().current(
-                                            "kasir.sendpayment"
-                                        )}
-                                    >
-                                        Send Payment
-                                    </NavLink>
-                                )}
-                                {user.role === "kasir" && (
-                                    <NavLink
-                                        href={route("kasir.seetransaksi")}
-                                        active={route().current(
-                                            "kasir.seetransaksi"
-                                        )}
+                                    href={route("kasir.seetransaksi")}
+                                    active={route().current(
+                                        "kasir.seetransaksi"
+                                    )}
                                     >
                                         See Transaksi
+                                    </NavLink>
+                                )}
+                                {user.role === "admin" && (
+                                    <NavLink
+                                        href={route("admin.user")}
+                                        active={route().current(
+                                            "admin.user"
+                                        )}
+                                    >
+                                        User
                                     </NavLink>
                                 )}
                             </div>
@@ -170,20 +170,28 @@ export default function Authenticated({ header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
-                        {user.role === "kasir" && (
+                        {/* {user.role === "kasir" && (
                             <ResponsiveNavLink
                                 href={route("kasir.sendpayment")}
                                 active={route().current("kasir.sendpayment")}
                             >
                                 Send Payment
                             </ResponsiveNavLink>
-                        )}
+                        )} */}
                         {user.role === "kasir" && (
                             <ResponsiveNavLink
                                 href={route("kasir.seetransaksi")}
                                 active={route().current("kasir.seetransaksi")}
                             >
                                 See Transaksi
+                            </ResponsiveNavLink>
+                        )}
+                        {user.role === "admin" && (
+                            <ResponsiveNavLink
+                                href={route("admin.user")}
+                                active={route().current("admin.user")}
+                            >
+                                User
                             </ResponsiveNavLink>
                         )}
                     </div>

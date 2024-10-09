@@ -18,25 +18,32 @@ export default function Login({ status, canResetPassword }) {
         e.preventDefault();
 
         try {
-            const response = await axios.post(route('login'), {
+            // Check if there is an existing token
+            const existingToken = localStorage.getItem("token");
+            if (existingToken) {
+                // Remove the existing token
+                localStorage.removeItem("token");
+            }
+            // Make the login request
+            const response = await axios.post(route("login"), {
                 name: data.name,
                 password: data.password,
                 remember: data.remember,
             });
-            console.log('Response:', response.data);
+
             // Check if the response contains the token
             if (response.data.token) {
                 // Store the token in local storage
-                localStorage.setItem('token', response.data.token);
+                localStorage.setItem("token", response.data.token);
                 // Redirect to the dashboard
-                window.location.href = '/dashboard';
+                window.location.href = "/dashboard";
             } else {
-                console.error('Token not found in response');
+                console.error("Token not found in response");
             }
         } catch (error) {
-            console.error('Login failed', error);
+            console.error("Login failed", error);
         } finally {
-            reset('password');
+            reset("password");
         }
     };
 

@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Admin Route
 Route::middleware('auth')->group(function () {
     Route::get('/admin/dashboard', function () {
         $user = Auth::user();
@@ -50,9 +51,16 @@ Route::middleware('auth')->group(function () {
         }
         return app(AdminController::class)->index();
     })->name('admin.dashboard');
-    // Add more admin routes here
+    Route::get('/admin/user', function () {
+        $user = Auth::user();
+        if ($user->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+        return app(AdminController::class)->user();
+    })->name('admin.user');
 });
 
+// Kasir Route
 Route::middleware('auth')->group(function () {
     Route::get('/kasir/dashboard', function () {
         $user = Auth::user();
@@ -76,9 +84,18 @@ Route::middleware('auth')->group(function () {
         }
         return app(KasirController::class)->seeTransaksi();
     })->name('kasir.seetransaksi');
+
+    Route::get('/kasir/see-detail-transaksi', function () {
+        $user = Auth::user();
+        if ($user->role !== 'kasir') {
+            abort(403, 'Unauthorized action.');
+        }
+        return app(KasirController::class)->seeDetailTransaksi();
+    })->name('kasir.seedetailtransaksi');
     
 });
 
+// Manajer Route
 Route::middleware('auth')->group(function () {
     Route::get('/manajer/dashboard', function () {
         $user = Auth::user();

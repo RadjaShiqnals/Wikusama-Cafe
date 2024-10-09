@@ -107,7 +107,7 @@ export default function KasirDashboard() {
                 }
             );
             alert(response.data.message);
-            window.location.href = "/kasir/seetransaksi";
+            window.location.href = "/kasir/see-transaksi";
         } catch (error) {
             alert(error.response.data.message);
         }

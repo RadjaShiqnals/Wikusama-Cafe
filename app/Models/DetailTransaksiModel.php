@@ -33,4 +33,17 @@ class DetailTransaksiModel extends Model
         return $this->belongsTo(MenuModel::class, 'id_menu', 'id_menu');
     }
 
+    public static function getDetailTransaksiByTransaksiId($id_transaksi)
+    {
+        return self::where('id_transaksi', $id_transaksi)
+            ->with('menuRelations')
+            ->get()
+            ->map(function ($detail) {
+                return [
+                    'menu' => $detail->menuRelations->nama_menu,
+                    'harga' => $detail->harga,
+                    'gambar' => url('storage/' . $detail->menuRelations->gambar),
+                ];
+            });
+    }
 }
