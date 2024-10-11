@@ -12,7 +12,6 @@ export default function AdminDashboard() {
         harga: ''
     });
 
-    const [mejaList, setMejaList] = useState([]);
     const [menuList, setMenuList] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -21,22 +20,7 @@ export default function AdminDashboard() {
     const [successMessage, setSuccessMessage] = useState(null);
 
     useEffect(() => {
-        // Fetch Meja data
-        axios
-            .get("/api/admin/getmeja", {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            })
-            .then((response) => {
-                setMejaList(response.data.meja);
-            })
-            .catch((error) => {
-                console.error(
-                    "There was an error fetching the meja data!",
-                    error
-                );
-            });
+
 
         // Fetch Menu data
         axios
@@ -156,7 +140,7 @@ export default function AdminDashboard() {
         <AuthenticatedLayout
             header={<h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Create Menu</h2>}
         >
-            <Head title="Create Menu" />
+            <Head title="Manage Menu" />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">

@@ -52,25 +52,25 @@ class ManajerController extends Controller
     }
 
     public function getTransactionsByDate($date, $hour = null)
-{
-    $user = Auth::guard('web')->user();
+    {
+        $user = Auth::guard('web')->user();
 
-    if ($user->role != 'manajer') {
-        return response()->json(['message' => 'You do not have access as a manager'], 403);
+        if ($user->role != 'manajer') {
+            return response()->json(['message' => 'You do not have access as a manager'], 403);
+        }
+
+        $query = TransaksiModel::query();
+
+        if ($date) {
+            $query->whereDate('created_at', $date);
+        }
+
+        if ($hour) {
+            $query->whereTime('created_at', '=', $hour);
+        }
+
+        $transactions = $query->get();
+
+        return response()->json(['transactions' => $transactions]);
     }
-
-    $query = TransaksiModel::query();
-
-    if ($date) {
-        $query->whereDate('created_at', $date);
-    }
-
-    if ($hour) {
-        $query->whereTime('created_at', '=', $hour);
-    }
-
-    $transactions = $query->get();
-
-    return response()->json(['transactions' => $transactions]);
-}
 }

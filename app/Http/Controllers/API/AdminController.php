@@ -73,7 +73,7 @@ class AdminController extends Controller
                 'password' => 'nullable|confirmed',
                 'role' => 'required|in:admin,kasir,manajer',
             ]);
-    
+
             $user = User::findOrFail($id);
             $user->name = $request->name;
             $user->username = $request->username;
@@ -81,7 +81,7 @@ class AdminController extends Controller
             $user->password = Hash::make($request->password);
             $user->role = $request->role;
             $user->save();
-    
+
             return response()->json([
                 'message' => 'User updated successfully',
                 'user' => $user
@@ -104,100 +104,100 @@ class AdminController extends Controller
     }
     // Create a new menu item
     public function createMenu(Request $request)
-{
-    // Get the authenticated user
-    $user = Auth::guard('api')->user();
-    
-    // Check if the authenticated user has the role "admin"
-    if ($user->role !== 'admin') {
-        return response()->json(['message' => 'Access denied'], 403);
-    } else {
-        $request->validate([
-            'nama_menu' => 'required',
-            'jenis' => 'required|in:makanan,minuman',
-            'deskripsi' => 'required',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'harga' => 'required|numeric',
-        ]);
+    {
+        // Get the authenticated user
+        $user = Auth::guard('api')->user();
 
-        // Handle image upload
-        if ($request->hasFile('gambar')) {
-            $image = $request->file('gambar');
-            $imageName = $image->getClientOriginalName();
-            $imagePath = $image->storeAs('images/menu', $imageName, 'public');
+        // Check if the authenticated user has the role "admin"
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Access denied'], 403);
+        } else {
+            $request->validate([
+                'nama_menu' => 'required',
+                'jenis' => 'required|in:makanan,minuman',
+                'deskripsi' => 'required',
+                'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'harga' => 'required|numeric',
+            ]);
+
+            // Handle image upload
+            if ($request->hasFile('gambar')) {
+                $image = $request->file('gambar');
+                $imageName = $image->getClientOriginalName();
+                $imagePath = $image->storeAs('images/menu', $imageName, 'public');
+            }
+
+            $menu = MenuModel::create([
+                'nama_menu' => $request->nama_menu,
+                'jenis' => $request->jenis,
+                'deskripsi' => $request->deskripsi,
+                'gambar' => $imagePath,
+                'harga' => $request->harga,
+            ]);
+
+            return response()->json([
+                'message' => 'Menu updated successfully',
+                'menu' => $menu
+            ], 200);
         }
-
-        $menu = MenuModel::create([
-            'nama_menu' => $request->nama_menu,
-            'jenis' => $request->jenis,
-            'deskripsi' => $request->deskripsi,
-            'gambar' => $imagePath,
-            'harga' => $request->harga,
-        ]);
-
-       return response()->json([
-            'message' => 'Menu updated successfully',
-            'menu' => $menu
-        ], 200);
     }
-}
 
-public function editMenu(Request $request)
-{
-    // Get the authenticated user
-    $user = Auth::guard('api')->user();
-    
-    // Check if the authenticated user has the role "admin"
-    if ($user->role !== 'admin') {
-        return response()->json(['message' => 'Access denied'], 403);
-    } else {
-        $request->validate([
-            'id_menu' => 'required',
-            'nama_menu' => 'required',
-            'jenis' => 'required|in:makanan,minuman',
-            'deskripsi' => 'required',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'harga' => 'required|numeric',
-        ]);
+    public function editMenu(Request $request)
+    {
+        // Get the authenticated user
+        $user = Auth::guard('api')->user();
 
-        $menu = MenuModel::findOrFail($request->id_menu);
+        // Check if the authenticated user has the role "admin"
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Access denied'], 403);
+        } else {
+            $request->validate([
+                'id_menu' => 'required',
+                'nama_menu' => 'required',
+                'jenis' => 'required|in:makanan,minuman',
+                'deskripsi' => 'required',
+                'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+                'harga' => 'required|numeric',
+            ]);
 
-        // Handle image upload
-        if ($request->hasFile('gambar')) {
-            $image = $request->file('gambar');
-            $imageName = $image->getClientOriginalName();
-            $imagePath = $image->storeAs('images/menu', $imageName, 'public');
-            $menu->gambar = $imagePath;
+            $menu = MenuModel::findOrFail($request->id_menu);
+
+            // Handle image upload
+            if ($request->hasFile('gambar')) {
+                $image = $request->file('gambar');
+                $imageName = $image->getClientOriginalName();
+                $imagePath = $image->storeAs('images/menu', $imageName, 'public');
+                $menu->gambar = $imagePath;
+            }
+
+            $menu->nama_menu = $request->nama_menu;
+            $menu->jenis = $request->jenis;
+            $menu->deskripsi = $request->deskripsi;
+            $menu->harga = $request->harga;
+            $menu->save();
+
+            return response()->json([
+                'message' => 'Menu updated successfully',
+                'menu' => $menu
+            ], 200);
         }
-
-        $menu->nama_menu = $request->nama_menu;
-        $menu->jenis = $request->jenis;
-        $menu->deskripsi = $request->deskripsi;
-        $menu->harga = $request->harga;
-        $menu->save();
-
-        return response()->json([
-            'message' => 'Menu updated successfully',
-            'menu' => $menu
-        ], 200);
     }
-}
 
-public function deleteMenu(Request $request, $id)
-{
-    // Get the authenticated user
-    $user = Auth::guard('api')->user();
-    
-    // Check if the authenticated user has the role "admin"
-    if ($user->role !== 'admin') {
-        return response()->json(['message' => 'Access denied'], 403);
-    } else {
-        $menu = MenuModel::findOrFail($id);
-        $menu->delete();
+    public function deleteMenu(Request $request, $id)
+    {
+        // Get the authenticated user
+        $user = Auth::guard('api')->user();
 
-        return response()->json(['message' => 'Menu deleted successfully'], 200);
+        // Check if the authenticated user has the role "admin"
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Access denied'], 403);
+        } else {
+            $menu = MenuModel::findOrFail($id);
+            $menu->delete();
+
+            return response()->json(['message' => 'Menu deleted successfully'], 200);
+        }
     }
-}
 
     public function getMeja(Request $request, Guard $auth)
     {
@@ -215,6 +215,83 @@ public function deleteMenu(Request $request, $id)
         }
 
     }
+
+    public function deleteMeja(Request $request, $id)
+    {
+        $user = Auth::guard('api')->user();
+
+        // Check if the authenticated user has the role "admin"
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Access denied'], 403);
+        } else {
+            $meja = MejaModel::findOrFail($id);
+
+            if ($meja->status == 'used') {
+                return response()->json(['message' => 'Meja is currently being used'], 403);
+            } else {
+                $meja->delete();
+            }
+
+            return response()->json(['message' => 'Meja deleted successfully'], 200);
+        }
+    }
+
+    public function editMeja(Request $request, $id)
+    {
+        $user = Auth::guard('api')->user();
+
+        // Check if the authenticated user has the role "admin"
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Access denied'], 403);
+        } else {
+            $request->validate([
+                'nomor_meja' => 'required|unique:meja,nomor_meja,' . $id,
+                'status' => 'nullable|in:available,used',
+            ]);
+
+            $meja = MejaModel::findOrFail($id);
+
+            if ($meja->status !== 'used') {
+                $meja->nomor_meja = $request->nomor_meja;
+            }
+
+            if ($request->status) {
+                $meja->status = $request->status;
+            }
+
+            $meja->save();
+
+            return response()->json([
+                'message' => 'Meja updated successfully',
+                'meja' => $meja
+            ], 200);
+        }
+    }
+
+    public function createMeja(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+
+        // Check if the authenticated user has the role "admin"
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Access denied'], 403);
+        } else {
+            $request->validate([
+                'nomor_meja' => 'required|unique:meja',
+            ]);
+
+            $meja = MejaModel::create([
+                'nomor_meja' => $request->nomor_meja,
+                'status' => 'available',
+            ]);
+
+            return response()->json([
+                'message' => 'Meja created successfully',
+                'meja' => $meja
+            ], 201);
+        }
+    }
+
     public function getMenu(Request $request)
     {
         $user = Auth::guard('api')->user();

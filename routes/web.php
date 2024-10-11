@@ -58,6 +58,13 @@ Route::middleware('auth')->group(function () {
         }
         return app(AdminController::class)->user();
     })->name('admin.user');
+    Route::get('/admin/meja', function () {
+        $user = Auth::user();
+        if ($user->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+        return app(AdminController::class)->meja();
+    })->name('admin.meja');
 });
 
 // Kasir Route
