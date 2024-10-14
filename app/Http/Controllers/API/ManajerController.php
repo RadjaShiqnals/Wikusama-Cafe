@@ -14,7 +14,7 @@ class ManajerController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
 
         // Check if the authenticated user has the role "kasir"
         if ($user->role == 'manajer') {
@@ -28,7 +28,7 @@ class ManajerController extends Controller
 
     public function getTransactionsByUserId($id_user)
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
 
         // Check if the authenticated user has the role "manajer"
         if ($user->role == 'manajer') {
@@ -40,7 +40,7 @@ class ManajerController extends Controller
     }
     public function getAllTransactions()
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
 
         // Check if the authenticated user has the role "manajer"
         if ($user->role == 'manajer') {
@@ -53,7 +53,7 @@ class ManajerController extends Controller
 
     public function getTransactionsByDate($date, $hour = null)
 {
-    $user = Auth::guard('web')->user();
+    $user = Auth::guard('api')->user();
 
     if ($user->role != 'manajer') {
         return response()->json(['message' => 'You do not have access as a manager'], 403);

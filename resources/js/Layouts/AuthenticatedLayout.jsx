@@ -72,6 +72,16 @@ export default function Authenticated({ header, children }) {
                                         User
                                     </NavLink>
                                 )}
+                                {user.role === "admin" && (
+                                    <NavLink
+                                        href={route("admin.meja")}
+                                        active={route().current(
+                                            "admin.meja"
+                                        )}
+                                    >
+                                        Meja
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 
@@ -192,6 +202,14 @@ export default function Authenticated({ header, children }) {
                                 active={route().current("admin.user")}
                             >
                                 User
+                            </ResponsiveNavLink>
+                        )}
+                        {user.role === "admin" && (
+                            <ResponsiveNavLink
+                                href={route("admin.meja")}
+                                active={route().current("admin.meja")}
+                            >
+                                Meja
                             </ResponsiveNavLink>
                         )}
                     </div>

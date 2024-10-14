@@ -215,6 +215,83 @@ public function deleteMenu(Request $request, $id)
         }
 
     }
+
+    public function deleteMeja(Request $request, $id)
+    {
+        $user = Auth::guard('api')->user();
+
+        // Check if the authenticated user has the role "admin"
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Access denied'], 403);
+        } else {
+            $meja = MejaModel::findOrFail($id);
+
+            if ($meja->status == 'used') {
+                return response()->json(['message' => 'Meja is currently being used'], 403);
+            } else {
+                $meja->delete();
+            }
+
+            return response()->json(['message' => 'Meja deleted successfully'], 200);
+        }
+    }
+
+    public function editMeja(Request $request, $id)
+{
+    $user = Auth::guard('api')->user();
+
+    // Check if the authenticated user has the role "admin"
+    if ($user->role !== 'admin') {
+        return response()->json(['message' => 'Access denied'], 403);
+    } else {
+        $request->validate([
+            'nomor_meja' => 'required|unique:meja,nomor_meja,' . $id,
+            'status' => 'nullable|in:available,used',
+        ]);
+
+        $meja = MejaModel::findOrFail($id);
+
+        if ($meja->status !== 'used') {
+            $meja->nomor_meja = $request->nomor_meja;
+        }
+
+        if ($request->status) {
+            $meja->status = $request->status;
+        }
+
+        $meja->save();
+
+        return response()->json([
+            'message' => 'Meja updated successfully',
+            'meja' => $meja
+        ], 200);
+    }
+}
+
+    public function createMeja (Request $request)
+    {
+        $user = Auth::guard('api')->user();
+
+        // Check if the authenticated user has the role "admin"
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Access denied'], 403);
+        } else {
+            $request->validate([
+                'nomor_meja' => 'required|unique:meja',
+            ]);
+
+            $meja = MejaModel::create([
+                'nomor_meja' => $request->nomor_meja,
+                'status' => 'available',
+            ]);
+
+            return response()->json([
+                'message' => 'Meja created successfully',
+                'meja' => $meja
+            ], 201);
+        }
+    }
+
     public function getMenu(Request $request)
     {
         $user = Auth::guard('api')->user();

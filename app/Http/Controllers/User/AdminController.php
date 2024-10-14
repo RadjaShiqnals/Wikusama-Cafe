@@ -16,4 +16,8 @@ class AdminController extends Controller
     {
         return Inertia::render('Admin/User');
     }
+    public function meja()
+    {
+        return Inertia::render('Admin/Meja');
+    }
 }
