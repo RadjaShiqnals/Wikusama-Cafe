@@ -44,7 +44,12 @@ class ManajerController extends Controller
 
         // Check if the authenticated user has the role "manajer"
         if ($user->role == 'manajer') {
+
             $transactions = TransaksiModel::all();
+
+            $transactions->load('userRelations', 'mejaRelations', 'detailTransaksiRelations.menuRelations');
+
+
             return response()->json(['transactions' => $transactions]);
         } else {
             return response()->json(['message' => 'You do not have access as a manager'], 403);
@@ -73,4 +78,20 @@ class ManajerController extends Controller
 
     return response()->json(['transactions' => $transactions]);
 }
+public function getUsers(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+
+        // Check if the authenticated user has the role "admin"
+        if ($user->role == 'admin') {
+            $menu = MenuModel::all();
+            return response()->json([
+                'menu' => $menu
+            ], 200);
+        } else {
+            // Logic for other roles
+            return response()->json(['message' => 'You do not have access as a kasir'], 403);
+        }
+
+    }
 }

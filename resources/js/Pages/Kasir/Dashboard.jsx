@@ -79,17 +79,27 @@ export default function KasirDashboard() {
         });
     };
 
-    const handleMenuChange = (e) => {
-        const { value, checked } = e.target;
+    const handleMenuChange = (e, menuId) => {
+        const { value } = e.target;
+        const quantity = parseInt(value, 10);
+
         setFormData((prevFormData) => {
-            const updatedMenu = checked
-                ? [...prevFormData.id_menu, value]
-                : prevFormData.id_menu.filter((id) => id !== value);
+            const updatedMenu = prevFormData.id_menu.filter((id) => id !== menuId);
+            for (let i = 0; i < quantity; i++) {
+                updatedMenu.push(menuId);
+            }
             return {
                 ...prevFormData,
                 id_menu: updatedMenu,
             };
         });
+    };
+
+    const calculateTotalPrice = () => {
+        return formData.id_menu.reduce((total, menuId) => {
+            const menu = menuList.find((menu) => menu.id_menu === menuId);
+            return total + menu.harga;
+        }, 0);
     };
 
     const handleSubmit = async (e) => {
@@ -193,15 +203,16 @@ export default function KasirDashboard() {
                                                                 <div className="text-center text-gray-800 dark:text-gray-200">{menu.nama_menu}</div>
                                                                 <div className="text-center text-gray-800 dark:text-gray-200">{menu.harga}</div>
                                                                 <div className="text-center">
+                                                                    <label htmlFor={`quantity_${menu.id_menu}`} className="block text-gray-700 dark:text-gray-200">Jumlah:</label>
                                                                     <input
-                                                                        type="checkbox"
-                                                                        id={`menu_${menu.id_menu}`}
-                                                                        name="id_menu"
-                                                                        value={menu.id_menu}
-                                                                        checked={formData.id_menu.includes(menu.id_menu)}
-                                                                        onChange={handleMenuChange}
+                                                                        type="number"
+                                                                        id={`quantity_${menu.id_menu}`}
+                                                                        name={`quantity_${menu.id_menu}`}
+                                                                        min="0"
+                                                                        value={formData.id_menu.filter((id) => id === menu.id_menu).length}
+                                                                        onChange={(e) => handleMenuChange(e, menu.id_menu)}
+                                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-200"
                                                                     />
-                                                                    <label htmlFor={`menu_${menu.id_menu}`} className="ml-2">{menu.nama_menu}</label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -211,12 +222,17 @@ export default function KasirDashboard() {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <button
-                                    type="submit"
-                                    className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
-                                >
-                                    Create Transaction
-                                </button>
+                                <div className="flex justify-between items-center mt-4">
+                                    <button
+                                        type="submit"
+                                        className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+                                    >
+                                        Create Transaction
+                                    </button>
+                                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                                        Total Harga: Rp {calculateTotalPrice()}
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>

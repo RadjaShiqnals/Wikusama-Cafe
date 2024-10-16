@@ -43,6 +43,21 @@ export default function SeeDetailTransaction() {
         fetchTransactionDetails();
     }, []);
 
+    const groupedDetails = details.reduce((acc, detail) => {
+        const existingDetail = acc.find(item => item.menu === detail.menu);
+        if (existingDetail) {
+            existingDetail.quantity += 1;
+            existingDetail.totalHarga += detail.harga;
+        } else {
+            acc.push({ ...detail, quantity: 1, totalHarga: detail.harga });
+        }
+        return acc;
+    }, []);
+
+    const calculateTotalPrice = () => {
+        return groupedDetails.reduce((total, detail) => total + detail.totalHarga, 0);
+    };
+
     return (
         <AuthenticatedLayout
             header={
@@ -83,12 +98,18 @@ export default function SeeDetailTransaction() {
                                                 Harga
                                             </th>
                                             <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                                Jumlah
+                                            </th>
+                                            <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                                Total Harga
+                                            </th>
+                                            <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
                                                 Gambar
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {details.map((detail, index) => (
+                                        {groupedDetails.map((detail, index) => (
                                             <tr
                                                 key={index}
                                                 className="bg-white dark:bg-gray-800"
@@ -98,6 +119,12 @@ export default function SeeDetailTransaction() {
                                                 </td>
                                                 <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
                                                     {detail.harga}
+                                                </td>
+                                                <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                                    {detail.quantity}
+                                                </td>
+                                                <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                                    {detail.totalHarga}
                                                 </td>
                                                 <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
                                                     <img
@@ -110,6 +137,11 @@ export default function SeeDetailTransaction() {
                                         ))}
                                     </tbody>
                                 </table>
+                                <div className="text-right mt-4">
+                                    <span className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                                        Total Harga: Rp {calculateTotalPrice()}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>

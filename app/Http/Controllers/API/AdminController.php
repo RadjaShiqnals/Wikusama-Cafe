@@ -17,20 +17,41 @@ class AdminController extends Controller
 {
     // Create a new user with role
     public function createUser(Request $request)
-    {
-        $user = Auth::guard('api')->user();
-        // Role check
-        if (!$user || $user->role !== 'admin') {
-            return response()->json(['message' => 'Access denied'], 403);
-        } else {
-            $request->validate([
-                'name' => 'required|unique:users',
-                'username' => 'required',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|confirmed',
-                'role' => 'required',
+{
+    $user = Auth::guard('api')->user();
+    // Role check
+    if (!$user || $user->role !== 'admin') {
+        return response()->json(['message' => 'Access denied'], 403);
+    } else {
+        $request->validate([
+            'name' => 'required|unique:users,name,NULL,id,deleted_at,NULL',
+            'username' => 'required',
+            'email' => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
+            'password' => 'required|confirmed',
+            'role' => 'required|in:admin,kasir,manajer',
+        ]);
+
+        // Check if a soft-deleted user exists with the same email
+        $existingUser = User::withTrashed()
+            ->where('email', $request->email)
+            ->orWhere('name', $request->name)
+            ->first();
+
+        if ($existingUser && $existingUser->trashed()) {
+            // Restore the soft-deleted user
+            $existingUser->restore();
+            $existingUser->update([
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+                'role' => $request->role,
             ]);
 
+            return response()->json([
+                'message' => 'User restored and updated successfully',
+                'user' => $existingUser
+            ], 200);
+        } else {
+            // Create a new user
             $user = User::create([
                 'name' => $request->name,
                 'username' => $request->username,
@@ -45,6 +66,7 @@ class AdminController extends Controller
             ], 201);
         }
     }
+}
 
     public function getAllUsers(Request $request)
     {

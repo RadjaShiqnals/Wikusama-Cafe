@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DetailTransaksiModel extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     public $table = 'detail_transaksi';
     public $primaryKey = 'id_detail_transaksi';
     public $incrementing = false;
