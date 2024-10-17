@@ -201,14 +201,16 @@ export default function KasirDashboard() {
                                                             <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
                                                                 <img src={`/storage/${menu.gambar}`} alt={menu.nama_menu} className="w-full h-32 object-cover mb-2 max-h-48" />
                                                                 <div className="text-center text-gray-800 dark:text-gray-200">{menu.nama_menu}</div>
-                                                                <div className="text-center text-gray-800 dark:text-gray-200">{menu.harga}</div>
+                                                                <div className="text-center text-gray-800 dark:text-gray-200">{menu.harga.toLocaleString("id-ID")}</div>
                                                                 <div className="text-center">
                                                                     <label htmlFor={`quantity_${menu.id_menu}`} className="block text-gray-700 dark:text-gray-200">Jumlah:</label>
                                                                     <input
-                                                                        type="number"
+                                                                        type="text"
                                                                         id={`quantity_${menu.id_menu}`}
                                                                         name={`quantity_${menu.id_menu}`}
                                                                         min="0"
+                                                                        max="99"
+                                                                        maxLength="2"
                                                                         value={formData.id_menu.filter((id) => id === menu.id_menu).length}
                                                                         onChange={(e) => handleMenuChange(e, menu.id_menu)}
                                                                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-200"
@@ -230,7 +232,7 @@ export default function KasirDashboard() {
                                         Create Transaction
                                     </button>
                                     <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                                        Total Harga: Rp {calculateTotalPrice()}
+                                        Total Harga: Rp {calculateTotalPrice().toLocaleString("id-ID")}
                                     </div>
                                 </div>
                             </form>

@@ -8,8 +8,7 @@ export default function SeeTransaction() {
     const [transactions, setTransactions] = useState([]);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
-    const { props } = usePage();
-
+    const user = usePage().props.auth.user;
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
@@ -23,8 +22,10 @@ export default function SeeTransaction() {
                         },
                     }
                 );
-                setTransactions(response.data.transactions);
-                console.log("Transactions:", response.data.transactions);
+                const userTransactions = response.data.transactions.filter(
+                    (transaction) => transaction.id_user === user.id_user
+                );
+                setTransactions(userTransactions);
             } catch (error) {
                 setError("Failed to fetch transactions");
                 console.error(error);
@@ -163,8 +164,12 @@ export default function SeeTransaction() {
                                                 <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
                                                     {transaction.nama_pelanggan}
                                                 </td>
-                                                <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
-                                                    {transaction.status}
+                                                <td className="py-2 px-4 border-b text-center">
+                                                    {transaction.status === 'belum_bayar' ? (
+                                                        <span className="text-red-500">Belum Bayar</span>
+                                                    ) : (
+                                                        <span className="text-green-500">Lunas</span>
+                                                    )}
                                                 </td>
                                                 <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
                                                     {transaction.tgl_transaksi}

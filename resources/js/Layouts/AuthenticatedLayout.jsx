@@ -39,6 +39,9 @@ export default function Authenticated({ header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
+                                onClick={() => {
+                                    localStorage.removeItem('id_transaksi');
+                                }}
                                     href={getDashboardLink()}
                                     active={
                                         user.role === "kasir"
@@ -54,6 +57,9 @@ export default function Authenticated({ header, children }) {
                                 </NavLink>
                                 {user.role === "kasir" && (
                                     <NavLink
+                                    onClick={() => {
+                                        localStorage.removeItem('id_transaksi');
+                                    }}
                                     href={route("kasir.seetransaksi")}
                                     active={route().current(
                                         "kasir.seetransaksi"
@@ -175,8 +181,19 @@ export default function Authenticated({ header, children }) {
                 >
                     <div className="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
+                            onClick={() => {
+                                localStorage.removeItem('id_transaksi');
+                            }}
+                                href={getDashboardLink()}
+                                active={
+                                    user.role === "kasir"
+                                        ? route().current('kasir.dashboard')
+                                        : user.role === "admin"
+                                        ? route().current('admin.dashboard')
+                                        : user.role === "manajer"
+                                        ? route().current('manajer.dashboard')
+                                        : false
+                                }
                         >
                             Dashboard
                         </ResponsiveNavLink>
@@ -190,6 +207,9 @@ export default function Authenticated({ header, children }) {
                         )} */}
                         {user.role === "kasir" && (
                             <ResponsiveNavLink
+                            onClick={() => {
+                                localStorage.removeItem('id_transaksi');
+                            }}
                                 href={route("kasir.seetransaksi")}
                                 active={route().current("kasir.seetransaksi")}
                             >

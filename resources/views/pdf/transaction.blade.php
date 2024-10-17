@@ -40,15 +40,41 @@
                 <tr>
                     <th>Nama Menu</th>
                     <th>Harga</th>
+                    <th>Jumlah</th>
+                    <th>Total Harga</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($details as $detail)
+                @php
+                    $groupedDetails = [];
+                    $totalHargaSemua = 0;
+                    foreach ($details as $detail) {
+                        $menuName = $detail->menuRelations->nama_menu;
+                        if (isset($groupedDetails[$menuName])) {
+                            $groupedDetails[$menuName]['quantity'] += 1;
+                            $groupedDetails[$menuName]['totalHarga'] += $detail->harga;
+                        } else {
+                            $groupedDetails[$menuName] = [
+                                'harga' => $detail->harga,
+                                'quantity' => 1,
+                                'totalHarga' => $detail->harga
+                            ];
+                        }
+                        $totalHargaSemua += $detail->harga;
+                    }
+                @endphp
+                @foreach($groupedDetails as $menuName => $detail)
                     <tr>
-                        <td>{{ $detail->menuRelations->nama_menu }}</td>
-                        <td>{{ $detail->harga }}</td>
+                        <td>{{ $menuName }}</td>
+                        <td>{{ $detail['harga'] }}</td>
+                        <td>{{ $detail['quantity'] }}</td>
+                        <td>{{ $detail['totalHarga'] }}</td>
                     </tr>
                 @endforeach
+                <tr>
+                    <td colspan="3" style="text-align: left;"><strong>Total Harga Semua</strong></td>
+                    <td><strong>{{ $totalHargaSemua }}</strong></td>
+                </tr>
             </tbody>
         </table>
     </div>

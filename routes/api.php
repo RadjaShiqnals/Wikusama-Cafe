@@ -27,6 +27,8 @@ Route::get('/kasir/getmenu', [KasirController::class, 'getMenu']);
 // Manajer API
 Route::get('/manajer/get-all-transaksi/{id}', [ManajerController::class, 'getTransactionsByUserId']);
 Route::get('/manajer/get-all-transaksi', [ManajerController::class, 'getAllTransactions']);
+Route::get('/manajer/get-detail-transaksi/{id}', [ManajerController::class, 'getDetailTransaksi']);
+Route::get('/manajer/download-pdf/{id}', [ManajerController::class, 'downloadPdf']);
 Route::get('/manajer/get-transaksi/{date}/{hour?}', [ManajerController::class, 'getTransactionsByDate']);
 
 // Admin API

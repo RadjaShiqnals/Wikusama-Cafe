@@ -9,6 +9,8 @@ use App\Models\MejaModel;
 use App\Models\TransaksiModel;
 use App\Models\DetailTransaksiModel;
 use App\Models\MenuModel;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class ManajerController extends Controller
 {
@@ -26,18 +28,6 @@ class ManajerController extends Controller
         }
     }
 
-    public function getTransactionsByUserId($id_user)
-    {
-        $user = Auth::guard('api')->user();
-
-        // Check if the authenticated user has the role "manajer"
-        if ($user->role == 'manajer') {
-            $transactions = TransaksiModel::where('id_user', $id_user)->get();
-            return response()->json(['transactions' => $transactions]);
-        } else {
-            return response()->json(['message' => 'You do not have access as a manager'], 403);
-        }
-    }
     public function getAllTransactions()
     {
         $user = Auth::guard('api')->user();
@@ -53,6 +43,66 @@ class ManajerController extends Controller
             return response()->json(['transactions' => $transactions]);
         } else {
             return response()->json(['message' => 'You do not have access as a manager'], 403);
+        }
+    }
+
+    public function getDetailTransaksi(Request $request, $id_transaksi)
+    {
+        // Get the authenticated user
+        $user = Auth::guard('api')->user();
+        // Check if the authenticated user has the role "kasir"
+        if ($user->role == 'manajer') {
+            $details = DetailTransaksiModel::getDetailTransaksiByTransaksiId($id_transaksi);
+
+            return response()->json([
+                'details' => $details,
+            ]);
+        } else {
+            // Logic for other roles
+            return response()->json(['message' => 'You do not have access as a manajer'], 403);
+        }
+    }
+
+    public function downloadPdf($id_transaksi)
+    {
+        // Get the authenticated user
+        $user = Auth::guard('api')->user();
+        // Check if the authenticated user has the role "kasir"
+        if ($user->role == 'manajer') {
+            // Get the transaction by ID
+            $transaction = TransaksiModel::with(['userRelations', 'mejaRelations', 'detailTransaksiRelations.menuRelations'])
+                ->find($id_transaksi);
+
+            if (!$transaction) {
+                return response()->json(['message' => 'Transaction not found'], 404);
+            }
+
+            // Prepare the data for the PDF
+            $data = [
+                'cafe_name' => 'Wikusama Cafe',
+                'tgl_transaksi' => $transaction->tgl_transaksi,
+                'nama_pelanggan' => $transaction->nama_pelanggan,
+                'nomor_meja' => $transaction->mejaRelations->nomor_meja,
+                'details' => $transaction->detailTransaksiRelations,
+                'thanks_message' => 'Thank you for visiting Wikusama Cafe!',
+            ];
+
+            // Generate the PDF
+            $options = new Options();
+            $options->set('isHtml5ParserEnabled', true);
+            $options->set('isRemoteEnabled', true);
+
+            $dompdf = new Dompdf($options);
+            $html = view('pdf.transaction', $data)->render();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Output the generated PDF to the browser
+            return $dompdf->stream('transaction.pdf');
+        } else {
+            // Logic for other roles
+            return response()->json(['message' => 'You do not have access as a kasir'], 403);
         }
     }
 
