@@ -69,19 +69,34 @@ Make sure you have the following installed on your machine:
 
         Import the `database/wikusama_cafe.sql` file into your database using a tool like phpMyAdmin or the MySQL command line.
 
-7. Start the development server:
+7. Seed the database with the admin account:
+
+    ```sh
+    php artisan db:seed --class=AdminUserSeeder
+    ```
+
+8. Start the development server:
 
     ```sh
     php artisan serve
     ```
 
-8. Compile the front-end assets:
+9. Compile the front-end assets:
 
     ```sh
     npm run dev
     # or
     yarn dev
     ```
+
+### Admin Account
+
+An admin account has been created for you to log in:
+
+- **Email**: demoadmin01@gmail.com
+- **Username**: demoadmin01username
+- **Name**: demoadmin01
+- **Password**: demoadmin01
 
 ### API Documentation
 
