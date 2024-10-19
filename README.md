@@ -67,7 +67,7 @@ Make sure you have the following installed on your machine:
 
     - Option 2: Import the SQL dump file manually
 
-        Import the [wikusama_cafe.sql](http://_vscodecontentref_/#%7B%22uri%22%3A%7B%22%24mid%22%3A1%2C%22fsPath%22%3A%22d%3A%5C%5CSMK%20TELKOM%5C%5CKelas%20XII%20RPL%204%5C%5CUKK%5C%5Cwikusama_cafe_react%5C%5Cdatabase%5C%5Cwikusama_cafe.sql%22%2C%22_sep%22%3A1%2C%22external%22%3A%22file%3A%2F%2F%2Fd%253A%2FSMK%2520TELKOM%2FKelas%2520XII%2520RPL%25204%2FUKK%2Fwikusama_cafe_react%2Fdatabase%2Fwikusama_cafe.sql%22%2C%22path%22%3A%22%2Fd%3A%2FSMK%20TELKOM%2FKelas%20XII%20RPL%204%2FUKK%2Fwikusama_cafe_react%2Fdatabase%2Fwikusama_cafe.sql%22%2C%22scheme%22%3A%22file%22%7D%7D) file into your database using a tool like phpMyAdmin or the MySQL command line.
+        Import the `database/wikusama_cafe.sql` file into your database using a tool like phpMyAdmin or the MySQL command line.
 
 7. Start the development server:
 
