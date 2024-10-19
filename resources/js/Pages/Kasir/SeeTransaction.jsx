@@ -120,9 +120,6 @@ export default function SeeTransaction() {
                                                 ID Transaksi
                                             </th>
                                             <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
-                                                Username
-                                            </th>
-                                            <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
                                                 Nomor Meja
                                             </th>
                                             <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
@@ -147,12 +144,6 @@ export default function SeeTransaction() {
                                             >
                                                 <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
                                                     {transaction.id_transaksi}
-                                                </td>
-                                                <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
-                                                    {
-                                                        transaction
-                                                            .user_relations.name
-                                                    }
                                                 </td>
                                                 <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
                                                     {
