@@ -97,7 +97,7 @@ In order to ensure that the Wikusama Cafe community is welcoming to all, please 
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Wikusama Cafe, please send an e-mail to Radja Shiqnals via [radja@example.com](mailto:radja@example.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Wikusama Cafe, please send an e-mail to Radja Shiqnals via [radjagentasaputra@gmail.com](mailto:radjagentasaputra@gmail.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
