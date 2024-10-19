@@ -119,8 +119,19 @@ class AdminController extends Controller
             return response()->json(['message' => 'Access denied'], 403);
         } elseif ($user->id_user == $id) {
             return response()->json(['message' => 'You cannot delete your own account'], 403);
+        } elseif ($user->role == 'admin') {
+            return response()->json(['message' => 'You cannot delete an admin account'], 403);
         } else {
             $userToDelete = User::findOrFail($id);
+
+            // Check if the user to be deleted is a kasir and has pending transactions
+            if ($userToDelete->role === 'kasir') {
+                $pendingTransactions = $userToDelete->transactions()->where('status', 'belum_bayar')->count();
+                if ($pendingTransactions > 0) {
+                    return response()->json(['message' => 'User cannot be deleted until all transactions are paid'], 403);
+                }
+            }
+
             $userToDelete->delete();
 
             return response()->json(['message' => 'User deleted successfully'], 200);
