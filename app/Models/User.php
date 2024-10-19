@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Laravel\Sanctum\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\TransaksiModel;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -54,6 +55,10 @@ class User extends Authenticatable implements JWTSubject
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function transactions()
+    {
+        return $this->hasMany(TransaksiModel::class, 'id_user', 'id_user');
     }
     public function getJWTIdentifier()
     {
