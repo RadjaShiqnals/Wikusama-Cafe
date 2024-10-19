@@ -15,6 +15,7 @@ export default function User() {
 
     const [users, setUsers] = useState([]);
     const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
@@ -108,7 +109,7 @@ export default function User() {
     };
     const handleDeleteUser = async (id) => {
         try {
-            await axios.delete(`/api/admin/delete-user/${id}`, {
+            const response = await axios.delete(`/api/admin/delete-user/${id}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                     'Content-Type': 'application/json'
@@ -117,6 +118,11 @@ export default function User() {
             setSuccessMessage('User deleted successfully');
             fetchUsers();
         } catch (error) {
+            if (error.response) {
+                setErrorMessage(error.response.data.message);
+            } else {
+                setErrorMessage('An error occurred');
+            }
             console.error("There was an error deleting the user!", error);
         }
     };
@@ -145,6 +151,9 @@ export default function User() {
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             {successMessage && (
                                 <div className="text-green-500 mb-4">{successMessage}</div>
+                            )}
+                            {errorMessage && (
+                                <div className="text-red-500 mb-4">{errorMessage}</div>
                             )}
                             <button
                                 className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4"

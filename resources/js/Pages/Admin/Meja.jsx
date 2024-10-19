@@ -40,7 +40,7 @@ export default function Meja() {
         try {
             await axios.post('/api/admin/create-meja', {
                 nomor_meja: data.nomor_meja,
-                status: data.status,
+                status: "available",
             }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -129,23 +129,18 @@ export default function Meja() {
                         <div className="flex justify-between items-center mb-4">
                             <button
                                 onClick={() => setIsCreateModalOpen(true)}
-                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                className="bg-indigo-500 hover:bg-indigo-700 text-white px-4 py-2 rounded"
                             >
                                 Create Meja
                             </button>
                         </div>
 
                         {successMessage && (
-                            <div className="bg-green-500 text-white p-2 rounded mb-4">
-                                {successMessage}
-                            </div>
-                        )}
-
-                        {errorMessage && (
-                            <div className="bg-red-500 text-white p-2 rounded mb-4">
-                                {errorMessage}
-                            </div>
-                        )}
+                                <div className="text-green-500 mb-4">{successMessage}</div>
+                            )}
+                            {errorMessage && (
+                                <div className="text-red-500 mb-4">{errorMessage}</div>
+                            )}
 
                         <table className="min-w-full bg-white text-black dark:text-white dark:bg-gray-800 text-center">
                             <thead>
@@ -181,33 +176,19 @@ export default function Meja() {
 
                         {isCreateModalOpen && (
                             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                                <div className="bg-white p-4 rounded">
-                                    <h2 className="text-xl font-bold mb-4">Create Meja</h2>
+                                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                                    <h2 className="text-gray-900 dark:text-gray-100 text-xl font-bold mb-4">Create Meja</h2>
                                     <form onSubmit={handleCreateSubmit}>
                                         <div className="mb-4">
-                                            <label className="block text-gray-700">Nomor Meja</label>
+                                            <label className="text-gray-900 dark:text-gray-100">Nomor Meja</label>
                                             <input
                                                 type="text"
                                                 value={data.nomor_meja}
                                                 onChange={(e) => setData('nomor_meja', e.target.value)}
-                                                className="w-full p-2 border rounded"
+                                                className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                                             />
                                             {validationErrors.nomor_meja && (
                                                 <div className="text-red-500">{validationErrors.nomor_meja}</div>
-                                            )}
-                                        </div>
-                                        <div className="mb-4">
-                                            <label className="block text-gray-700">Status</label>
-                                            <select
-                                                value={data.status}
-                                                onChange={(e) => setData('status', e.target.value)}
-                                                className="w-full p-2 border rounded"
-                                            >
-                                                <option value="available">Available</option>
-                                                <option value="used">Used</option>
-                                            </select>
-                                            {validationErrors.status && (
-                                                <div className="text-red-500">{validationErrors.status}</div>
                                             )}
                                         </div>
                                         <div className="flex justify-end">

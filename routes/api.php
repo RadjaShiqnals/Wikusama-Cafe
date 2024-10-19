@@ -40,7 +40,7 @@ Route::post('/admin/create-menu', [AdminController::class, 'createMenu']);
 Route::put('/admin/edit-menu', [AdminController::class, 'editMenu']);
 Route::delete('/admin/delete-menu/{id}', [AdminController::class, 'deleteMenu']);
 Route::get('/admin/get-meja', [AdminController::class, 'getMeja']);
-Route::get('/admin/create-meja', [AdminController::class, 'createMeja']);
+Route::post('/admin/create-meja', [AdminController::class, 'createMeja']);
 Route::get('/admin/edit-meja/{id}', [AdminController::class, 'editMeja']);
 Route::get('/admin/delete-meja/{id}', [AdminController::class, 'deleteMeja']);
 Route::get('/admin/getmenu', [AdminController::class, 'getMenu']);

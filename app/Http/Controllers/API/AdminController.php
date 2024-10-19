@@ -117,9 +117,11 @@ class AdminController extends Controller
         // Role check
         if ($user->role !== 'admin') {
             return response()->json(['message' => 'Access denied'], 403);
+        } elseif ($user->id_user == $id) {
+            return response()->json(['message' => 'You cannot delete your own account'], 403);
         } else {
-            $user = User::findOrFail($id);
-            $user->delete();
+            $userToDelete = User::findOrFail($id);
+            $userToDelete->delete();
 
             return response()->json(['message' => 'User deleted successfully'], 200);
         }
