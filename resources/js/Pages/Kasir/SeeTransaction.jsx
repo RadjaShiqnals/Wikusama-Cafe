@@ -8,7 +8,11 @@ export default function SeeTransaction() {
     const [transactions, setTransactions] = useState([]);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+    const [details, setDetails] = useState([]);
+    const [selectedTransactionId, setSelectedTransactionId] = useState(null);
     const user = usePage().props.auth.user;
+
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
@@ -34,6 +38,7 @@ export default function SeeTransaction() {
 
         fetchTransactions();
     }, []);
+
     const handleDownloadPdf = async (id_transaksi) => {
         const token = localStorage.getItem("token");
         const url = `/api/kasir/download-pdf/${id_transaksi}`;
@@ -58,6 +63,7 @@ export default function SeeTransaction() {
             console.error('Error:', error);
         }
     };
+
     const handlePayTransaction = async (id_transaksi) => {
         try {
             const response = await axios.post(
@@ -85,10 +91,47 @@ export default function SeeTransaction() {
         }
     };
 
-    const handleSeeDetailTransaction = (id_transaksi) => {
-        // Save the id_transaksi to localStorage or some other state management
-        localStorage.setItem("id_transaksi", id_transaksi);
-        Inertia.visit("/kasir/see-detail-transaksi");
+    const handleSeeDetailTransaction = async (id_transaksi) => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get(
+                `/api/kasir/get-detail-transaksi/${id_transaksi}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                }
+            );
+            setDetails(response.data.details);
+            setSelectedTransactionId(id_transaksi);
+            setIsDetailModalOpen(true);
+        } catch (error) {
+            setError("Failed to fetch transaction details");
+            console.error(error);
+        }
+    };
+
+    const handleCloseDetailModal = () => {
+        setIsDetailModalOpen(false);
+        setDetails([]);
+        setSelectedTransactionId(null);
+    };
+
+    const groupedDetails = details.reduce((acc, detail) => {
+        const existingDetail = acc.find(item => item.menu === detail.menu);
+        if (existingDetail) {
+            existingDetail.quantity += 1;
+            existingDetail.totalHarga += detail.harga;
+        } else {
+            acc.push({ ...detail, quantity: 1, totalHarga: detail.harga });
+        }
+        return acc;
+    }, []);
+
+    const calculateTotalPrice = () => {
+        return groupedDetails.reduce((total, detail) => total + detail.totalHarga, 0);
     };
 
     return (
@@ -209,6 +252,75 @@ export default function SeeTransaction() {
                     </div>
                 </div>
             </div>
+            {isDetailModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Detail Transaksi</h3>
+                        <div className="overflow-x-auto">
+                            <button
+                                onClick={handleCloseDetailModal}
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-all duration-200"
+                            >
+                                Close
+                            </button>
+                            <table className="min-w-full bg-white dark:bg-gray-800">
+                                <thead>
+                                    <tr>
+                                        <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                            Menu
+                                        </th>
+                                        <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                            Harga
+                                        </th>
+                                        <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                            Jumlah
+                                        </th>
+                                        <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                            Total Harga
+                                        </th>
+                                        <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                            Gambar
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {groupedDetails.map((detail, index) => (
+                                        <tr
+                                            key={index}
+                                            className="bg-white dark:bg-gray-800"
+                                        >
+                                            <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                                {detail.menu}
+                                            </td>
+                                            <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                                {detail.harga}
+                                            </td>
+                                            <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                                {detail.quantity}
+                                            </td>
+                                            <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                                {detail.totalHarga}
+                                            </td>
+                                            <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
+                                                <img
+                                                    src={detail.gambar}
+                                                    alt={detail.menu}
+                                                    className="w-20 h-20 object-cover mb-2 mx-auto"
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            <div className="text-right mt-4">
+                                <span className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                                    Total Harga: Rp {calculateTotalPrice()}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AuthenticatedLayout>
     );
 }

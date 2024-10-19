@@ -92,13 +92,13 @@ Route::middleware('auth')->group(function () {
         return app(KasirController::class)->seeTransaksi();
     })->name('kasir.seetransaksi');
 
-    Route::get('/kasir/see-detail-transaksi', function () {
-        $user = Auth::user();
-        if ($user->role !== 'kasir') {
-            abort(403, 'Unauthorized action.');
-        }
-        return app(KasirController::class)->seeDetailTransaksi();
-    })->name('kasir.seedetailtransaksi');
+    // Route::get('/kasir/see-detail-transaksi', function () {
+    //     $user = Auth::user();
+    //     if ($user->role !== 'kasir') {
+    //         abort(403, 'Unauthorized action.');
+    //     }
+    //     return app(KasirController::class)->seeDetailTransaksi();
+    // })->name('kasir.seedetailtransaksi');
     
 });
 

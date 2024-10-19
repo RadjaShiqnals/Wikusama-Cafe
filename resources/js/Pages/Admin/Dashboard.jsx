@@ -14,6 +14,7 @@ export default function AdminDashboard() {
 
     const [menuList, setMenuList] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDescriptionModalOpen, setDescriptionIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedDescription, setSelectedDescription] = useState('');
     const [selectedMenu, setSelectedMenu] = useState(null);
@@ -42,11 +43,11 @@ export default function AdminDashboard() {
 
     const handleDescriptionClick = (description) => {
         setSelectedDescription(description);
-        setIsModalOpen(true);
+        setDescriptionIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
-        setIsModalOpen(false);
+        setDescriptionIsModalOpen(false);
         setSelectedDescription('');
     };
 
@@ -184,6 +185,23 @@ export default function AdminDashboard() {
                                     ))}
                                 </div>
                             </div>
+                            {isDescriptionModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Description</h3>
+                        <p className="mt-4 text-gray-900 dark:text-gray-100">{selectedDescription}</p>
+                        <div className="mt-4 flex justify-end">
+                            <button
+                                type="button"
+                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                onClick={handleCloseModal}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
                         </div>
                     </div>
                 </div>

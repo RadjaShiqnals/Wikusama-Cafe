@@ -20,8 +20,8 @@ class KasirController extends Controller
     {
         return Inertia::render('Kasir/SeeTransaction');
     }
-    public function seeDetailTransaksi()
-    {
-        return Inertia::render('Kasir/seeDetailTransaction');
-    }
+    // public function seeDetailTransaksi()
+    // {
+    //     return Inertia::render('Kasir/seeDetailTransaction');
+    // }
 }

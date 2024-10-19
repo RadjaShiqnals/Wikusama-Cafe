@@ -128,43 +128,71 @@ class AdminController extends Controller
     }
     // Create a new menu item
     public function createMenu(Request $request)
-{
-    // Get the authenticated user
-    $user = Auth::guard('api')->user();
-    
-    // Check if the authenticated user has the role "admin"
-    if ($user->role !== 'admin') {
-        return response()->json(['message' => 'Access denied'], 403);
-    } else {
-        $request->validate([
-            'nama_menu' => 'required',
-            'jenis' => 'required|in:makanan,minuman',
-            'deskripsi' => 'required',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'harga' => 'required|numeric',
-        ]);
+    {
+        $user = Auth::guard('api')->user();
+        
+        // Check if the authenticated user has the role "admin"
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Access denied'], 403);
+        } else {
+            $request->validate([
+                'nama_menu' => 'required',
+                'jenis' => 'required|in:makanan,minuman',
+                'deskripsi' => 'required',
+                'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'harga' => 'required|numeric',
+            ]);
 
-        // Handle image upload
-        if ($request->hasFile('gambar')) {
-            $image = $request->file('gambar');
-            $imageName = $image->getClientOriginalName();
-            $imagePath = $image->storeAs('images/menu', $imageName, 'public');
+            // Check if a soft-deleted menu exists with the same name
+            $existingMenu = MenuModel::withTrashed()
+                ->where('nama_menu', $request->nama_menu)
+                ->first();
+
+            if ($existingMenu && $existingMenu->trashed()) {
+                // Restore the soft-deleted menu
+                $existingMenu->restore();
+                $existingMenu->update([
+                    'jenis' => $request->jenis,
+                    'deskripsi' => $request->deskripsi,
+                    'harga' => $request->harga,
+                ]);
+
+                // Handle image upload
+                if ($request->hasFile('gambar')) {
+                    $image = $request->file('gambar');
+                    $imageName = $image->getClientOriginalName();
+                    $imagePath = $image->storeAs('images/menu', $imageName, 'public');
+                    $existingMenu->update(['gambar' => $imagePath]);
+                }
+
+                return response()->json([
+                    'message' => 'Menu restored and updated successfully',
+                    'menu' => $existingMenu
+                ], 200);
+            } else {
+                // Handle image upload
+                if ($request->hasFile('gambar')) {
+                    $image = $request->file('gambar');
+                    $imageName = $image->getClientOriginalName();
+                    $imagePath = $image->storeAs('images/menu', $imageName, 'public');
+                }
+
+                // Create a new menu
+                $menu = MenuModel::create([
+                    'nama_menu' => $request->nama_menu,
+                    'jenis' => $request->jenis,
+                    'deskripsi' => $request->deskripsi,
+                    'gambar' => $imagePath,
+                    'harga' => $request->harga,
+                ]);
+
+                return response()->json([
+                    'message' => 'Menu created successfully',
+                    'menu' => $menu
+                ], 201);
+            }
         }
-
-        $menu = MenuModel::create([
-            'nama_menu' => $request->nama_menu,
-            'jenis' => $request->jenis,
-            'deskripsi' => $request->deskripsi,
-            'gambar' => $imagePath,
-            'harga' => $request->harga,
-        ]);
-
-       return response()->json([
-            'message' => 'Menu updated successfully',
-            'menu' => $menu
-        ], 200);
     }
-}
 
 public function editMenu(Request $request)
 {
@@ -292,18 +320,36 @@ public function deleteMenu(Request $request, $id)
     }
 }
 
-    public function createMeja (Request $request)
-    {
-        $user = Auth::guard('api')->user();
+public function createMeja(Request $request)
+{
+    $user = Auth::guard('api')->user();
 
-        // Check if the authenticated user has the role "admin"
-        if ($user->role !== 'admin') {
-            return response()->json(['message' => 'Access denied'], 403);
-        } else {
-            $request->validate([
-                'nomor_meja' => 'required|unique:meja',
+    // Check if the authenticated user has the role "admin"
+    if ($user->role !== 'admin') {
+        return response()->json(['message' => 'Access denied'], 403);
+    } else {
+        $request->validate([
+            'nomor_meja' => 'required|unique:meja,nomor_meja,NULL,id,deleted_at,NULL',
+        ]);
+
+        // Check if a soft-deleted meja exists with the same nomor_meja
+        $existingMeja = MejaModel::withTrashed()
+            ->where('nomor_meja', $request->nomor_meja)
+            ->first();
+
+        if ($existingMeja && $existingMeja->trashed()) {
+            // Restore the soft-deleted meja
+            $existingMeja->restore();
+            $existingMeja->update([
+                'status' => 'available',
             ]);
 
+            return response()->json([
+                'message' => 'Meja restored and updated successfully',
+                'meja' => $existingMeja
+            ], 200);
+        } else {
+            // Create a new meja
             $meja = MejaModel::create([
                 'nomor_meja' => $request->nomor_meja,
                 'status' => 'available',
@@ -315,6 +361,7 @@ public function deleteMenu(Request $request, $id)
             ], 201);
         }
     }
+}
 
     public function getMenu(Request $request)
     {
