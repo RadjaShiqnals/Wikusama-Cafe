@@ -5,13 +5,16 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^7.3|^8.0",
+        "ext-curl": "*",
+        "ext-pdo_pgsql": "*",
+        "ext-pgsql": "*",
         "barryvdh/laravel-dompdf": "^3.0",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "php-open-source-saver/-auth": "^2.3",
+        "php-open-source-saver/jwt-auth": "^2.3",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
