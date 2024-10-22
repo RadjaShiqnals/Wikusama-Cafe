@@ -24,7 +24,7 @@ Route::middleware('guest')->group(function () {
             } 
         }
         return app(RegisteredUserController::class)->create();
-    })->name('login');
+    })->name('register');
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
