@@ -89,11 +89,10 @@ export default function User() {
                     fetchUsers();
                     setIsEditModalOpen(false);
                     reset();
-                    setValidationErrors({});
                 },
                 onError: (errors) => {
                     if (errors.response && errors.response.data.errors) {
-                        setValidationErrors(errors.response.data.errors);
+                        setErrorMessage(errors.response.data.message);
                     } else {
                         console.error(errors);
                     }
@@ -101,7 +100,7 @@ export default function User() {
             });
         } catch (error) {
             if (error.response && error.response.data.errors) {
-                setValidationErrors(error.response.data.errors);
+                setErrorMessage(error.response.data.message);
             } else {
                 console.error("There was an error updating the user!", error);
             }
@@ -147,7 +146,7 @@ export default function User() {
             <Head title="Manage Users" />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-dark-form">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             {successMessage && (
                                 <div className="text-green-500 mb-4">{successMessage}</div>
@@ -156,12 +155,12 @@ export default function User() {
                                 <div className="text-red-500 mb-4">{errorMessage}</div>
                             )}
                             <button
-                                className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4"
+                                className="bg-light-primary hover:bg-light-primary_hover text-white font-bold py-2 px-4 rounded mb-4"
                                 onClick={() => setIsCreateModalOpen(true)}
                             >
                                 Create User
                             </button>
-                            <table className="min-w-full bg-white dark:bg-gray-800 text-center">
+                            <table className="min-w-full bg-white dark:bg-dark-form text-center">
                                 <thead>
                                     <tr>
                                         <th className="py-2">Name</th>
@@ -203,7 +202,7 @@ export default function User() {
 
             {isCreateModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <div className="bg-white dark:bg-dark-form p-6 rounded-lg shadow-lg">
                         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Create User</h3>
                         <form onSubmit={handleCreateSubmit}>
                             <div className="mt-4">
@@ -213,7 +212,7 @@ export default function User() {
                                     type="text"
                                     value={data.name}
                                     onChange={(e) => setData('name', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 />
                                 {validationErrors.name && <div className="text-red-500 dark:text-red-400">{validationErrors.name[0]}</div>}
                             </div>
@@ -224,7 +223,7 @@ export default function User() {
                                     type="text"
                                     value={data.username}
                                     onChange={(e) => setData('username', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 />
                                 {validationErrors.username && <div className="text-red-500 dark:text-red-400">{validationErrors.username[0]}</div>}
                             </div>
@@ -235,7 +234,7 @@ export default function User() {
                                     type="email"
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 />
                                 {validationErrors.email && <div className="text-red-500 dark:text-red-400">{validationErrors.email[0]}</div>}
                             </div>
@@ -246,7 +245,7 @@ export default function User() {
                                     type="password"
                                     value={data.password}
                                     onChange={(e) => setData('password', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 />
                                 {validationErrors.password && <div className="text-red-500 dark:text-red-400">{validationErrors.password[0]}</div>}
                             </div>
@@ -257,7 +256,7 @@ export default function User() {
                                     type="password"
                                     value={data.password_confirmation}
                                     onChange={(e) => setData('password_confirmation', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 />
                                 {validationErrors.password_confirmation && <div className="text-red-500 dark:text-red-400">{validationErrors.password_confirmation[0]}</div>}
                             </div>
@@ -267,7 +266,7 @@ export default function User() {
                                     id="role"
                                     value={data.role}
                                     onChange={(e) => setData('role', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 >
                                     <option value="admin">Admin</option>
                                     <option value="kasir">Kasir</option>
@@ -278,14 +277,14 @@ export default function User() {
                             <div className="mt-4 flex justify-end">
                                 <button
                                     type="button"
-                                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2"
+                                    className="bg-light-secondary hover:bg-light-accent text-white font-bold py-2 px-4 rounded mr-2"
                                     onClick={() => setIsCreateModalOpen(false)}
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+                                    className="bg-light-primary hover:bg-light-primary_hover text-white font-bold py-2 px-4 rounded"
                                 >
                                     Create
                                 </button>
@@ -297,7 +296,7 @@ export default function User() {
 
             {isEditModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <div className="bg-white dark:bg-dark-form p-6 rounded-lg shadow-lg">
                         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Edit User</h3>
                         <form onSubmit={handleEditSubmit}>
                             <div className="mt-4">
@@ -307,7 +306,7 @@ export default function User() {
                                     type="text"
                                     value={data.name}
                                     onChange={(e) => setData('name', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 />
                                 {validationErrors.name && <div className="text-red-500 dark:text-red-400">{validationErrors.name[0]}</div>}
                             </div>
@@ -318,7 +317,7 @@ export default function User() {
                                     type="text"
                                     value={data.username}
                                     onChange={(e) => setData('username', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 />
                                 {validationErrors.username && <div className="text-red-500 dark:text-red-400">{validationErrors.username[0]}</div>}
                             </div>
@@ -329,7 +328,7 @@ export default function User() {
                                     type="email"
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 />
                                 {validationErrors.email && <div className="text-red-500 dark:text-red-400">{validationErrors.email[0]}</div>}
                             </div>
@@ -340,7 +339,7 @@ export default function User() {
                                     type="password"
                                     value={data.password}
                                     onChange={(e) => setData('password', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 />
                                 {validationErrors.password && <div className="text-red-500 dark:text-red-400">{validationErrors.password[0]}</div>}
                             </div>
@@ -351,7 +350,7 @@ export default function User() {
                                     type="password"
                                     value={data.password_confirmation}
                                     onChange={(e) => setData('password_confirmation', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 />
                                 {validationErrors.password_confirmation && <div className="text-red-500 dark:text-red-400">{validationErrors.password_confirmation[0]}</div>}
                             </div>
@@ -361,7 +360,7 @@ export default function User() {
                                     id="role"
                                     value={data.role}
                                     onChange={(e) => setData('role', e.target.value)}
-                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                                 >
                                     <option value="admin">Admin</option>
                                     <option value="kasir">Kasir</option>
@@ -372,14 +371,14 @@ export default function User() {
                             <div className="mt-4 flex justify-end">
                                 <button
                                     type="button"
-                                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2"
+                                    className="bg-light-secondary hover:bg-light-accent text-white font-bold py-2 px-4 rounded mr-2"
                                     onClick={() => setIsEditModalOpen(false)}
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+                                    className="bg-light-primary hover:bg-light-primary_hover text-white font-bold py-2 px-4 rounded"
                                 >
                                     Save Changes
                                 </button>

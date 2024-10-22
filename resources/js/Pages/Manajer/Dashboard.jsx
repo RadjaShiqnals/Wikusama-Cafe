@@ -129,13 +129,13 @@ export default function ManajerDashboard() {
 
         return (
             <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-lg">
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-3/4">
+                <div className="bg-white dark:bg-dark-form p-6 rounded-lg shadow-lg w-3/4">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Detail Transaksi</h2>
                         <button onClick={onClose} className="text-gray-800 dark:text-gray-200">Close</button>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="min-w-full bg-white dark:bg-gray-800">
+                        <table className="min-w-full bg-white dark:bg-dark-form">
                             <thead>
                                 <tr>
                                     <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">Menu</th>
@@ -147,7 +147,7 @@ export default function ManajerDashboard() {
                             </thead>
                             <tbody>
                                 {groupedDetails.map((detail, index) => (
-                                    <tr key={index} className="bg-white dark:bg-gray-800">
+                                    <tr key={index} className="bg-white dark:bg-dark-form">
                                         <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">{detail.menu}</td>
                                         <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">{detail.harga}</td>
                                         <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">{detail.quantity}</td>
@@ -167,7 +167,7 @@ export default function ManajerDashboard() {
                         <div className="text-right mt-4">
                             <button
                                 onClick={handleDownloadPdf}
-                                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-all duration-200"
+                                className="bg-light-primary hover:bg-light-primary_hover text-white font-bold py-2 px-4 rounded transition-all duration-200"
                             >
                                 Download PDF
                             </button>
@@ -185,7 +185,7 @@ export default function ManajerDashboard() {
             <Head title="Manajer Dashboard" />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-dark-form">
                         <div className="p-6 text-gray-900 dark:text-gray-100 relative">
                             {error && <div className="text-red-500 mb-4">{error}</div>}
                             <div className="bg-transparent w-64">
@@ -209,7 +209,7 @@ export default function ManajerDashboard() {
                                 </div>
                             </div>
                             <div className="overflow-x-auto mt-4">
-                                <table className="min-w-full bg-white dark:bg-gray-800">
+                                <table className="min-w-full bg-white dark:bg-dark-form">
                                     <thead>
                                         <tr>
                                             <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">ID Transaksi</th>
@@ -223,7 +223,7 @@ export default function ManajerDashboard() {
                                     </thead>
                                     <tbody>
                                         {filteredTransactions.map((transaction, index) => (
-                                            <tr key={index} className="bg-white dark:bg-gray-800">
+                                            <tr key={index} className="bg-white dark:bg-dark-form">
                                                 <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">{transaction.id_transaksi}</td>
                                                 <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">{transaction.user_relations.name}</td>
                                                 <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">{transaction.nama_pelanggan}</td>
@@ -239,7 +239,7 @@ export default function ManajerDashboard() {
                                                 <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
                                                     <button
                                                         onClick={() => handleSeeDetail(transaction.id_transaksi)}
-                                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-all duration-200"
+                                                        className="bg-light-primary hover:bg-light-primary_hover text-white font-bold py-2 px-4 rounded transition-all duration-200"
                                                     >
                                                         See Detail Transaction
                                                     </button>

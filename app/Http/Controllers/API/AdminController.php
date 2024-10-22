@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\MejaModel;
 use Illuminate\Contracts\Auth\Guard;
 use Inertia\Inertia;
+use App\Models\TransaksiModel;
 
 class AdminController extends Controller
 {
@@ -303,17 +304,25 @@ public function deleteMenu(Request $request, $id)
     public function editMeja(Request $request, $id)
 {
     $user = Auth::guard('api')->user();
-
     // Check if the authenticated user has the role "admin"
     if ($user->role !== 'admin') {
         return response()->json(['message' => 'Access denied'], 403);
     } else {
         $request->validate([
-            'nomor_meja' => 'required|unique:meja,nomor_meja,' . $id,
+            'nomor_meja' => 'required|unique:meja,nomor_meja,' . $id . ',id_meja',
             'status' => 'nullable|in:available,used',
         ]);
 
         $meja = MejaModel::findOrFail($id);
+
+        // Check if there are any unpaid transactions for this meja
+        $unpaidTransactions = TransaksiModel::where('id_meja', $id)
+            ->where('status', 'belum_bayar')
+            ->exists();
+
+        if ($unpaidTransactions) {
+            return response()->json(['message' => 'Cannot change status. There are unpaid transactions for this meja.'], 403);
+        }
 
         if ($meja->status !== 'used') {
             $meja->nomor_meja = $request->nomor_meja;

@@ -134,7 +134,7 @@ export default function KasirDashboard() {
             <Head title="Kasir Dashboard" />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-dark-form">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <form onSubmit={handleSubmit}>
                                 <table>
@@ -152,7 +152,7 @@ export default function KasirDashboard() {
                                                     value={formData.id_meja}
                                                     onChange={handleChange}
                                                     required
-                                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
+                                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form"
                                                 >
                                                     <option value="">
                                                         Select Meja
@@ -184,7 +184,7 @@ export default function KasirDashboard() {
                                                     }
                                                     onChange={handleChange}
                                                     required
-                                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
+                                                    className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form"
                                                 />
                                             </td>
                                         </tr>
@@ -198,7 +198,7 @@ export default function KasirDashboard() {
                                                 <div className="flex flex-wrap">
                                                     {menuList.map((menu) => (
                                                         <div key={menu.id_menu} className="w-1/3 p-2">
-                                                            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                                                            <div className="bg-white dark:bg-dark-background p-4 rounded-lg shadow-md">
                                                                 <img src={`/storage/${menu.gambar}`} alt={menu.nama_menu} className="w-full h-32 object-cover mb-2 max-h-48" />
                                                                 <div className="text-center text-gray-800 dark:text-gray-200">{menu.nama_menu}</div>
                                                                 <div className="text-center text-gray-800 dark:text-gray-200">{menu.harga.toLocaleString("id-ID")}</div>
@@ -213,7 +213,7 @@ export default function KasirDashboard() {
                                                                         maxLength="2"
                                                                         value={formData.id_menu.filter((id) => id === menu.id_menu).length}
                                                                         onChange={(e) => handleMenuChange(e, menu.id_menu)}
-                                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-200"
+                                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-dark-accent dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-200"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -227,7 +227,7 @@ export default function KasirDashboard() {
                                 <div className="flex justify-between items-center mt-4">
                                     <button
                                         type="submit"
-                                        className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+                                        className="bg-light-primary hover:bg-light-primary_hover text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
                                     >
                                         Create Transaction
                                     </button>

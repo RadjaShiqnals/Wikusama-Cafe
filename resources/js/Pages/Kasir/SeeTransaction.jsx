@@ -145,7 +145,7 @@ export default function SeeTransaction() {
             <Head title="See Transactions" />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-dark-form">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             {error && (
                                 <div className="text-red-500 mb-4">{error}</div>
@@ -156,7 +156,7 @@ export default function SeeTransaction() {
                                 </div>
                             )}
                             <div className="overflow-x-auto">
-                                <table className="min-w-full bg-white dark:bg-gray-800">
+                                <table className="min-w-full bg-white dark:bg-dark-form">
                                     <thead>
                                         <tr>
                                             <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
@@ -183,7 +183,7 @@ export default function SeeTransaction() {
                                         {transactions.map((transaction) => (
                                             <tr
                                                 key={transaction.id_transaksi}
-                                                className="bg-white dark:bg-gray-800"
+                                                className="bg-white dark:bg-dark-form"
                                             >
                                                 <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
                                                     {transaction.id_transaksi}
@@ -212,7 +212,7 @@ export default function SeeTransaction() {
                                                     {transaction.status !==
                                                         "lunas" && (
                                                         <button
-                                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                            className="bg-light-primary hover:bg-light-primary_hover text-white font-bold py-2 px-4 rounded"
                                                             onClick={() =>
                                                                 handlePayTransaction(
                                                                     transaction.id_transaksi
@@ -223,7 +223,7 @@ export default function SeeTransaction() {
                                                         </button>
                                                     )}
                                                     <button
-                                                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
+                                                        className="bg-light-secondary hover:bg-light-accent text-white font-bold py-2 px-4 rounded ml-2"
                                                         onClick={() =>
                                                             handleSeeDetailTransaction(
                                                                 transaction.id_transaksi
@@ -238,7 +238,7 @@ export default function SeeTransaction() {
                                                                 transaction.id_transaksi
                                                             )
                                                         }
-                                                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                                                        className="mt-4 px-4 py-2 bg-light-text hover:bg-light-text_hover text-white rounded"
                                                     >
                                                         Download PDF
                                                     </button>
@@ -254,16 +254,16 @@ export default function SeeTransaction() {
             </div>
             {isDetailModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <div className="bg-white dark:bg-dark-form p-6 rounded-lg shadow-lg">
                         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Detail Transaksi</h3>
                         <div className="overflow-x-auto">
                             <button
                                 onClick={handleCloseDetailModal}
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-all duration-200"
+                                className="bg-light-primary hover:bg-light-primary_hover text-white font-bold py-2 px-4 rounded transition-all duration-200"
                             >
                                 Close
                             </button>
-                            <table className="min-w-full bg-white dark:bg-gray-800">
+                            <table className="min-w-full bg-white dark:bg-dark-form">
                                 <thead>
                                     <tr>
                                         <th className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
@@ -287,7 +287,7 @@ export default function SeeTransaction() {
                                     {groupedDetails.map((detail, index) => (
                                         <tr
                                             key={index}
-                                            className="bg-white dark:bg-gray-800"
+                                            className="bg-white dark:bg-dark-form"
                                         >
                                             <td className="py-2 px-4 border-b text-center text-gray-800 dark:text-gray-200">
                                                 {detail.menu}

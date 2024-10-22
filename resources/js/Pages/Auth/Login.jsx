@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -8,6 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import axios from 'axios';
 
 export default function Login({ status, canResetPassword }) {
+    const [message, setMessage] = useState(null);
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         password: '',
@@ -41,6 +43,7 @@ export default function Login({ status, canResetPassword }) {
                 console.error("Token not found in response");
             }
         } catch (error) {
+            setMessage(error.response.data.message ?? error.response.data.error);
             console.error("Login failed", error);
         } finally {
             reset("password");
@@ -51,9 +54,9 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout>
             <Head title="Log in" />
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
+            {message && (
+                <div className="mb-4 text-sm font-medium text-red-700">
+                    {message}
                 </div>
             )}
 
@@ -109,7 +112,7 @@ export default function Login({ status, canResetPassword }) {
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                            className="rounded-md text-sm text-light-text underline hover:text-light-primary_hover focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                         >
                             Forgot your password?
                         </Link>

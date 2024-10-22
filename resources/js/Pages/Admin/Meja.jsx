@@ -57,7 +57,8 @@ export default function Meja() {
             if (error.response && error.response.data.errors) {
                 setValidationErrors(error.response.data.errors);
             } else {
-                setErrorMessage('There was an error creating the meja!');
+                setErrorMessage(error.response.data.message);
+                setIsCreateModalOpen(false);
                 console.error("There was an error creating the meja!", error);
             }
         }
@@ -80,12 +81,12 @@ export default function Meja() {
             fetchMeja();
             setIsEditModalOpen(false);
             reset();
-            setValidationErrors({});
         } catch (error) {
             if (error.response && error.response.data.errors) {
-                setValidationErrors(error.response.data.errors);
+                setErrorMessage(error.response.data.errors);
             } else {
-                setErrorMessage('There was an error updating the meja!');
+                setErrorMessage(error.response.data.message);
+                setIsEditModalOpen(false);
                 console.error("There was an error updating the meja!", error);
             }
         }
@@ -103,7 +104,11 @@ export default function Meja() {
             setErrorMessage(null);
             fetchMeja();
         } catch (error) {
-            setErrorMessage('There was an error deleting the meja!');
+            if (error.response && error.response.data.message) {
+                setErrorMessage(error.response.data.message);
+            } else {
+                setErrorMessage('There was an error deleting the meja!');
+            }
             console.error("There was an error deleting the meja!", error);
         }
     };
@@ -124,12 +129,12 @@ export default function Meja() {
             <Head title="Manage Table" />
             <div className="py-12">
             <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+                <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-dark-form">
                     <div className="container mx-auto p-4">
                         <div className="flex justify-between items-center mb-4">
                             <button
                                 onClick={() => setIsCreateModalOpen(true)}
-                                className="bg-indigo-500 hover:bg-indigo-700 text-white px-4 py-2 rounded"
+                                className="bg-light-primary hover:bg-light-primary_hover text-white px-4 py-2 rounded"
                             >
                                 Create Meja
                             </button>
@@ -142,7 +147,7 @@ export default function Meja() {
                                 <div className="text-red-500 mb-4">{errorMessage}</div>
                             )}
 
-                        <table className="min-w-full bg-white text-black dark:text-white dark:bg-gray-800 text-center">
+                        <table className="min-w-full bg-white text-black dark:text-white dark:bg-dark-form text-center">
                             <thead>
                                 <tr>
                                     <th className="py-2">Nomor Meja</th>
@@ -176,7 +181,7 @@ export default function Meja() {
 
                         {isCreateModalOpen && (
                             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                                <div className="bg-white dark:bg-dark-form p-6 rounded-lg shadow-lg">
                                     <h2 className="text-gray-900 dark:text-gray-100 text-xl font-bold mb-4">Create Meja</h2>
                                     <form onSubmit={handleCreateSubmit}>
                                         <div className="mb-4">
@@ -185,7 +190,7 @@ export default function Meja() {
                                                 type="text"
                                                 value={data.nomor_meja}
                                                 onChange={(e) => setData('nomor_meja', e.target.value)}
-                                                className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                                                className="w-full p-2 border rounded bg-white dark:bg-dark-form text-gray-900 dark:text-gray-100"
                                             />
                                             {validationErrors.nomor_meja && (
                                                 <div className="text-red-500">{validationErrors.nomor_meja}</div>
@@ -195,13 +200,13 @@ export default function Meja() {
                                             <button
                                                 type="button"
                                                 onClick={() => setIsCreateModalOpen(false)}
-                                                className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+                                                className="bg-light-secondary hover:bg-light-accent text-white px-4 py-2 rounded mr-2"
                                             >
                                                 Cancel
                                             </button>
                                             <button
                                                 type="submit"
-                                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                                className="bg-light-primary hover:bg-light-primary_hover text-white px-4 py-2 rounded"
                                             >
                                                 Create
                                             </button>
@@ -213,27 +218,27 @@ export default function Meja() {
 
                         {isEditModalOpen && (
                             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                                <div className="bg-white p-4 rounded">
-                                    <h2 className="text-xl font-bold mb-4">Edit Meja</h2>
+                                <div className="bg-white dark:bg-dark-form p-4 rounded">
+                                    <h2 className="text-xl font-bold mb-4 dark:text-gray-200">Edit Meja</h2>
                                     <form onSubmit={handleEditSubmit}>
                                         <div className="mb-4">
-                                            <label className="block text-gray-700">Nomor Meja</label>
+                                            <label className="block text-gray-700 dark:text-gray-200">Nomor Meja</label>
                                             <input
                                                 type="text"
                                                 value={data.nomor_meja}
                                                 onChange={(e) => setData('nomor_meja', e.target.value)}
-                                                className="w-full p-2 border rounded"
+                                                className="dark:text-gray-200 w-full p-2 border rounded dark:bg-dark-form  "
                                             />
                                             {validationErrors.nomor_meja && (
                                                 <div className="text-red-500">{validationErrors.nomor_meja}</div>
                                             )}
                                         </div>
                                         <div className="mb-4">
-                                            <label className="block text-gray-700">Status</label>
+                                            <label className="block text-gray-700  dark:text-gray-200">Status</label>
                                             <select
                                                 value={data.status}
                                                 onChange={(e) => setData('status', e.target.value)}
-                                                className="w-full p-2 border rounded"
+                                                className="w-full p-2 border rounded dark:bg-dark-form dark:text-gray-200"
                                             >
                                                 <option value="available">Available</option>
                                                 <option value="used">Used</option>
@@ -246,13 +251,13 @@ export default function Meja() {
                                             <button
                                                 type="button"
                                                 onClick={() => setIsEditModalOpen(false)}
-                                                className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+                                                className="bg-light-secondary hover:bg-light-accent text-white px-4 py-2 rounded mr-2"
                                             >
                                                 Cancel
                                             </button>
                                             <button
                                                 type="submit"
-                                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                                className="bg-light-primary hover:bg-light-primary_hover text-white px-4 py-2 rounded"
                                             >
                                                 Update
                                             </button>
