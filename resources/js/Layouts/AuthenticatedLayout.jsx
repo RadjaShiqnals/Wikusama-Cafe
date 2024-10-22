@@ -26,14 +26,14 @@ export default function Authenticated({ header, children }) {
         }
     };
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
+        <div className="min-h-screen bg-light-background filter brightness-90 dark:bg-dark-background">
+            <nav className="border-b border-gray-100 bg-light-background dark:border-gray-700 dark:bg-dark-secondary">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href={getDashboardLink()}>
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                                    <ApplicationLogo className="block h-[30px] w-[30px] fill-current text-gray-800 dark:text-gray-200" />
                                 </Link>
                             </div>
 
@@ -99,7 +99,7 @@ export default function Authenticated({ header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
+                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-dark-accent dark:text-gray-300 dark:hover:text-gray-400"
                                             >
                                                 {user.username} | {user.role}
                                                 <svg
@@ -124,7 +124,7 @@ export default function Authenticated({ header, children }) {
                                         >
                                             Profile
                                         </Dropdown.Link>
-                                        <LogoutButton className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 dark:focus:bg-gray-700" />
+                                        <LogoutButton className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-300 dark:hover:bg-dark-secondary dark:focus:bg-dark-secondary" />
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
@@ -261,7 +261,7 @@ export default function Authenticated({ header, children }) {
             </nav>
 
             {header && (
-                <header className="bg-white shadow dark:bg-gray-800">
+                <header className="bg-white shadow dark:bg-dark-form">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                         {header}
                     </div>

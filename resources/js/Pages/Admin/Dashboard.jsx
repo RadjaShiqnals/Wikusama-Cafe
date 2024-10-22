@@ -144,10 +144,10 @@ export default function AdminDashboard() {
             <Head title="Manage Menu" />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-dark-form">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <button
-                                className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4"
+                                className="bg-light-primary hover:bg-light-primary_hover text-white font-bold py-2 px-4 rounded mb-4"
                                 onClick={() => setIsModalOpen(true)}
                             >
                                 Create Menu
@@ -159,7 +159,7 @@ export default function AdminDashboard() {
                                 <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Menu List</h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                                     {menuList.map((menu) => (
-                                        <div key={menu.id_menu} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-xl">
+                                        <div key={menu.id_menu} className="bg-white dark:bg-dark-form p-4 rounded-lg shadow-xl">
                                             <img src={`/storage/${menu.gambar}`} alt={menu.nama_menu} className="w-full h-32 object-cover mb-2 max-h-48" />
                                             <div className="text-center text-gray-800 dark:text-gray-200">{menu.nama_menu}</div>
                                             <div className="text-center text-gray-800 dark:text-gray-200">{menu.jenis}</div>
@@ -187,7 +187,7 @@ export default function AdminDashboard() {
                             </div>
                             {isDescriptionModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <div className="bg-white dark:bg-dark-form p-6 rounded-lg shadow-lg">
                         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Description</h3>
                         <p className="mt-4 text-gray-900 dark:text-gray-100">{selectedDescription}</p>
                         <div className="mt-4 flex justify-end">
@@ -208,7 +208,7 @@ export default function AdminDashboard() {
             </div>
             {isModalOpen && (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div className="bg-white dark:bg-dark-form p-6 rounded-lg shadow-lg">
             <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Create Menu</h3>
             <form onSubmit={handleSubmit}>
                 <div className="mt-4">
@@ -218,7 +218,7 @@ export default function AdminDashboard() {
                         type="text"
                         value={data.nama_menu}
                         onChange={(e) => setData('nama_menu', e.target.value)}
-                        className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                        className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                     />
                     {errors.nama_menu && <div className="text-red-500 dark:text-red-400">{errors.nama_menu}</div>}
                 </div>
@@ -228,7 +228,7 @@ export default function AdminDashboard() {
                         id="jenis"
                         value={data.jenis}
                         onChange={(e) => setData('jenis', e.target.value)}
-                        className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                        className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                     >
                         <option value="makanan">Makanan</option>
                         <option value="minuman">Minuman</option>
@@ -241,7 +241,7 @@ export default function AdminDashboard() {
                         id="deskripsi"
                         value={data.deskripsi}
                         onChange={(e) => setData('deskripsi', e.target.value)}
-                        className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                        className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                     />
                     {errors.deskripsi && <div className="text-red-500 dark:text-red-400">{errors.deskripsi}</div>}
                 </div>
@@ -251,7 +251,7 @@ export default function AdminDashboard() {
                         id="gambar"
                         type="file"
                         onChange={(e) => setData('gambar', e.target.files[0])}
-                        className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                        className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                     />
                     {errors.gambar && <div className="text-red-500 dark:text-red-400">{errors.gambar}</div>}
                 </div>
@@ -262,21 +262,21 @@ export default function AdminDashboard() {
                         type="number"
                         value={data.harga}
                         onChange={(e) => setData('harga', e.target.value)}
-                        className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                        className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                     />
                     {errors.harga && <div className="text-red-500 dark:text-red-400">{errors.harga}</div>}
                 </div>
                 <div className="mt-4 flex justify-end">
                     <button
                         type="button"
-                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2"
+                        className="bg-light-secondary hover:bg-light-accent text-white font-bold py-2 px-4 rounded mr-2"
                         onClick={() => setIsModalOpen(false)}
                     >
                         Cancel
                     </button>
                     <button
                         type="submit"
-                        className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-light-primary hover:bg-light-primary_hover text-white font-bold py-2 px-4 rounded"
                     >
                         Create
                     </button>
@@ -287,7 +287,7 @@ export default function AdminDashboard() {
 )}
            {isEditModalOpen && (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div className="bg-white dark:bg-dark-form p-6 rounded-lg shadow-lg">
             <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Edit Menu</h3>
             <form onSubmit={handleEditSubmit}>
                 <div className="mt-4">
@@ -297,7 +297,7 @@ export default function AdminDashboard() {
                         type="text"
                         value={data.nama_menu}
                         onChange={(e) => setData('nama_menu', e.target.value)}
-                        className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                        className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                     />
                     {errors.nama_menu && <div className="text-red-500 dark:text-red-400">{errors.nama_menu}</div>}
                 </div>
@@ -307,7 +307,7 @@ export default function AdminDashboard() {
                         id="jenis"
                         value={data.jenis}
                         onChange={(e) => setData('jenis', e.target.value)}
-                        className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                        className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                     >
                         <option value="makanan">Makanan</option>
                         <option value="minuman">Minuman</option>
@@ -320,7 +320,7 @@ export default function AdminDashboard() {
                         id="deskripsi"
                         value={data.deskripsi}
                         onChange={(e) => setData('deskripsi', e.target.value)}
-                        className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                        className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                     />
                     {errors.deskripsi && <div className="text-red-500 dark:text-red-400">{errors.deskripsi}</div>}
                 </div>
@@ -330,7 +330,7 @@ export default function AdminDashboard() {
                         id="gambar"
                         type="file"
                         onChange={(e) => setData('gambar', e.target.files[0])}
-                        className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                        className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                     />
                     {errors.gambar && <div className="text-red-500 dark:text-red-400">{errors.gambar}</div>}
                 </div>
@@ -341,21 +341,21 @@ export default function AdminDashboard() {
                         type="number"
                         value={data.harga}
                         onChange={(e) => setData('harga', e.target.value)}
-                        className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 dark:text-gray-100 w-full"
+                        className="bg-white shadow-sm sm:rounded-lg dark:bg-dark-form dark:text-gray-100 w-full"
                     />
                     {errors.harga && <div className="text-red-500 dark:text-red-400">{errors.harga}</div>}
                 </div>
                 <div className="mt-4 flex justify-end">
                     <button
                         type="button"
-                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2"
+                        className="bg-light-secondary hover:bg-light-accent text-white font-bold py-2 px-4 rounded mr-2"
                         onClick={() => setIsEditModalOpen(false)}
                     >
                         Cancel
                     </button>
                     <button
                         type="submit"
-                        className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-light-primary hover:bg-light-primary_hover text-white font-bold py-2 px-4 rounded"
                     >
                         Save Changes
                     </button>
