@@ -143,6 +143,13 @@ export default function SeeTransaction() {
             }
         >
             <Head title="See Transactions" />
+            <style>
+                {`
+                .cursor-not-allowed {
+                    cursor: not-allowed;
+                }
+                `}
+            </style>
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-dark-form">
@@ -232,13 +239,15 @@ export default function SeeTransaction() {
                                                     >
                                                         Detail
                                                     </button>
+                                                    <br/>
                                                     <button
                                                         onClick={() =>
                                                             handleDownloadPdf(
                                                                 transaction.id_transaksi
                                                             )
                                                         }
-                                                        className="mt-4 px-4 py-2 bg-light-text hover:bg-light-text_hover text-white rounded"
+                                                        className={`mt-4 px-4 py-2 bg-light-text hover:bg-light-text_hover text-white rounded ${transaction.status === 'belum_bayar' ? 'cursor-not-allowed' : ''}`}
+                                                        disabled={transaction.status === 'belum_bayar'}
                                                     >
                                                         Download PDF
                                                     </button>

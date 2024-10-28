@@ -7,7 +7,8 @@ export default function ManajerDashboard() {
     const [transactions, setTransactions] = useState([]);
     const [filteredTransactions, setFilteredTransactions] = useState([]);
     const [error, setError] = useState(null);
-    const [filterDate, setFilterDate] = useState('');
+    const [filterFromDate, setFilterFromDate] = useState('');
+    const [filterToDate, setFilterToDate] = useState('');
     const [filterUserId, setFilterUserId] = useState('');
     const [selectedTransaction, setSelectedTransaction] = useState(null); // State for selected transaction
     const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
@@ -34,8 +35,14 @@ export default function ManajerDashboard() {
     useEffect(() => {
         let filtered = transactions;
 
-        if (filterDate) {
-            filtered = filtered.filter(transaction => transaction.created_at.startsWith(filterDate));
+        if (filterFromDate) {
+            filtered = filtered.filter(transaction => new Date(transaction.created_at) >= new Date(filterFromDate));
+        }
+
+        if (filterToDate) {
+            const toDate = new Date(filterToDate);
+            toDate.setHours(23, 59, 59, 999); // Set time to the end of the day
+            filtered = filtered.filter(transaction => new Date(transaction.created_at) <= toDate);
         }
 
         if (filterUserId) {
@@ -43,7 +50,7 @@ export default function ManajerDashboard() {
         }
 
         setFilteredTransactions(filtered);
-    }, [filterDate, filterUserId, transactions]);
+    }, [filterFromDate, filterToDate, filterUserId, transactions]);
 
     const formatDate = (dateString) => {
         const options = {
@@ -190,11 +197,20 @@ export default function ManajerDashboard() {
                             {error && <div className="text-red-500 mb-4">{error}</div>}
                             <div className="bg-transparent w-64">
                                 <div className="mb-4">
-                                    <label className="block text-gray-700 dark:text-gray-200">Filter by Date:</label>
+                                    <label className="block text-gray-700 dark:text-gray-200">Filter from Date:</label>
                                     <input
                                         type="date"
-                                        value={filterDate}
-                                        onChange={(e) => setFilterDate(e.target.value)}
+                                        value={filterFromDate}
+                                        onChange={(e) => setFilterFromDate(e.target.value)}
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-200"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 dark:text-gray-200">Filter to Date:</label>
+                                    <input
+                                        type="date"
+                                        value={filterToDate}
+                                        onChange={(e) => setFilterToDate(e.target.value)}
                                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-200"
                                     />
                                 </div>
