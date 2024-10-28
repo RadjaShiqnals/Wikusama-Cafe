@@ -1,5 +1,3 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
@@ -101,6 +99,33 @@ An admin account has been created for you to log in:
 ### API Documentation
 
 The API documentation is available on Postman: [Wikusama Cafe API Documentation](https://documenter.getpostman.com/view/28791552/2sAXqwXyro)
+
+## Using the Project
+
+After installing and setting up the project, you can use it as follows:
+
+1. **Accessing the Application**:
+    - Open your browser and navigate to `http://localhost:8000` to access the application.
+
+2. **Logging In**:
+    - Use the admin account credentials provided above to log in and access the admin dashboard.
+
+3. **API Endpoints**:
+    - You can interact with the API using tools like Postman. Refer to the API documentation for detailed information on available endpoints and their usage.
+
+4. **Running Tests**:
+    - To run the tests, use the following command:
+      ```sh
+      php artisan test
+      ```
+
+5. **Building for Production**:
+    - To build the front-end assets for production, use the following command:
+      ```sh
+      npm run build
+      # or
+      yarn build
+      ```
 
 ## Contributing
 
