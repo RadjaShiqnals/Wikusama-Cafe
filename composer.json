@@ -42,8 +42,8 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "@php artisan jwt:secret --ansi",
-            "@php artisan storage:link --ansi"
+            "php artisan jwt:secret",
+            "php artisan storage:link"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
