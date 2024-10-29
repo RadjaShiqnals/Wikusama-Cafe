@@ -88,6 +88,16 @@ export default function Authenticated({ header, children }) {
                                         Meja
                                     </NavLink>
                                 )}
+                                {user.role === "admin" && (
+                                    <NavLink
+                                        href={route("admin.transaksi")}
+                                        active={route().current(
+                                            "admin.transaksi"
+                                        )}
+                                    >
+                                        Transaksi
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 

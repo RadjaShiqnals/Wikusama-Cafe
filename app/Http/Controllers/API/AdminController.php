@@ -398,6 +398,76 @@ public function createMeja(Request $request)
             // Logic for other roles
             return response()->json(['message' => 'You do not have access as a kasir'], 403);
         }
-
+        
     }
+     // Get all transactions
+     public function getAllTransactions(Request $request)
+     {
+         $user = Auth::guard('api')->user();
+         // Role check
+         if ($user->role !== 'admin') {
+             return response()->json(['message' => 'Access denied'], 403);
+         } else {
+             $transactions = TransaksiModel::with(['userRelations', 'mejaRelations', 'detailTransaksiRelations.menuRelations'])
+                 ->get();
+ 
+             return response()->json(['transactions' => $transactions], 200);
+         }
+     }
+ 
+     // Edit a transaction
+     public function editTransaction(Request $request, $id)
+     {
+         $user = Auth::guard('api')->user();
+         // Role check
+         if ($user->role !== 'admin') {
+             return response()->json(['message' => 'Access denied'], 403);
+         } else {
+             $transaction = TransaksiModel::findOrFail($id);
+ 
+             // Check if the transaction has been paid
+             if ($transaction->status !== 'paid') {
+                 return response()->json(['message' => 'Cannot edit a transaction that has not been paid'], 403);
+             }
+ 
+             $request->validate([
+                 'tgl_transaksi' => 'required|date',
+                 'nama_pelanggan' => 'required|string',
+                 'id_meja' => 'required|exists:meja,id_meja',
+                 'status' => 'required|in:paid,unpaid',
+             ]);
+ 
+             $transaction->tgl_transaksi = $request->tgl_transaksi;
+             $transaction->nama_pelanggan = $request->nama_pelanggan;
+             $transaction->id_meja = $request->id_meja;
+             $transaction->status = $request->status;
+             $transaction->save();
+ 
+             return response()->json([
+                 'message' => 'Transaction updated successfully',
+                 'transaction' => $transaction
+             ], 200);
+         }
+     }
+ 
+     // Delete a transaction
+     public function deleteTransaction(Request $request, $id)
+     {
+         $user = Auth::guard('api')->user();
+         // Role check
+         if ($user->role !== 'admin') {
+             return response()->json(['message' => 'Access denied'], 403);
+         } else {
+             $transaction = TransaksiModel::findOrFail($id);
+ 
+             // Check if the transaction has been paid
+             if ($transaction->status !== 'paid') {
+                 return response()->json(['message' => 'Cannot delete a transaction that has not been paid'], 403);
+             }
+ 
+             $transaction->delete();
+ 
+             return response()->json(['message' => 'Transaction deleted successfully'], 200);
+         }
+     }
 }

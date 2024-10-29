@@ -44,5 +44,7 @@ Route::post('/admin/create-meja', [AdminController::class, 'createMeja']);
 Route::put('/admin/edit-meja/{id}', [AdminController::class, 'editMeja']);
 Route::delete('/admin/delete-meja/{id}', [AdminController::class, 'deleteMeja']);
 Route::get('/admin/getmenu', [AdminController::class, 'getMenu']);
-
+Route::get('/admin/get-all-transactions', [AdminController::class, 'getAllTransactions']);
+Route::put('/admin/edit-transaction/{id}', [AdminController::class, 'editTransaction']);
+Route::delete('/admin/delete-transaction/{id}', [AdminController::class, 'deleteTransaction']);
 // Other API

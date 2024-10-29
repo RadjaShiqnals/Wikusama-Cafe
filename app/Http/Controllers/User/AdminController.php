@@ -20,4 +20,8 @@ class AdminController extends Controller
     {
         return Inertia::render('Admin/Meja');
     }
+    public function transaksi()
+    {
+        return Inertia::render('Admin/Transactions');
+    }
 }

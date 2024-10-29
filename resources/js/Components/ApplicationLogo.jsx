@@ -1,6 +1,6 @@
 export default function ApplicationLogo(props) {
     return (
-        <svg fill="#80411e" height="80px" width="80px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+        <svg fill="#80411e" height="40px" width="40px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	 viewBox="0 0 512.014 512.014" xmlSpace="preserve">
 <g>
 	<g>
